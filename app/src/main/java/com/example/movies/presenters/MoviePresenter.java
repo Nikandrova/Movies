@@ -27,6 +27,7 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
     }
 
     public void loadPopularMovies() {
+        if (d != null) d.dispose();
         d = api.provide()
                 .getPopularMovies("5d190a4676660309ee5187b997f90f2c")
                 .subscribeOn(Schedulers.io())
@@ -45,6 +46,7 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
     }
 
     public void loadHeightRatedMovies() {
+        if (d != null) d.dispose();
         d = api.provide()
                 .getTopRatedMovies("5d190a4676660309ee5187b997f90f2c")
                 .subscribeOn(Schedulers.io())

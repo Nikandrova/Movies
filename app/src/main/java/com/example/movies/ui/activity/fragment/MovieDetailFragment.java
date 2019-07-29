@@ -75,6 +75,4 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
                 .load(movie.getPosterPath())
                 .into(posterMovie);
     }
-
-
 }
