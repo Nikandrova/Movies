@@ -1,4 +1,4 @@
-package com.example.movies.ui.activity.activity;
+package com.example.movies.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,9 +15,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.movies.R;
 import com.example.movies.data.Movie;
 import com.example.movies.presenters.MoviePresenter;
-import com.example.movies.ui.activity.Adapter.MoviesAdapter;
-import com.example.movies.ui.activity.fragment.MovieDetailFragment;
-import com.example.movies.ui.activity.fragment.SettingsSortingFragment;
+import com.example.movies.ui.adapter.MoviesAdapter;
+import com.example.movies.ui.fragment.MovieDetailFragment;
+import com.example.movies.ui.fragment.SettingsSortingFragment;
 import com.example.movies.views.MovieView;
 
 import org.parceler.Parcels;

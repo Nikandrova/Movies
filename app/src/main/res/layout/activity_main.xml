@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.activity.activity.MoviesActivity">
+    tools:context=".ui.activity.MoviesActivity">
 
     <android.support.v7.widget.Toolbar xmlns:appNs="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tbMainActivity"

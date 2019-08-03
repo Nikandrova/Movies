@@ -1,4 +1,4 @@
-package com.example.movies.ui.activity.Adapter;
+package com.example.movies.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

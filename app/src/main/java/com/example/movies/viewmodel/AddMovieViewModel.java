@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.movies.data.Movie;
-import com.example.movies.repository.AppDatabase;
+import com.example.movies.db.AppDatabase;
 
 public class AddMovieViewModel extends ViewModel {
     private LiveData<Movie> movieLiveData;

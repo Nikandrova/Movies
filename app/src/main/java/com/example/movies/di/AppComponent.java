@@ -1,7 +1,7 @@
 package com.example.movies.di;
 
 import com.example.movies.presenters.MoviePresenter;
-import com.example.movies.ui.activity.App;
+import com.example.movies.App;
 
 import javax.inject.Singleton;
 

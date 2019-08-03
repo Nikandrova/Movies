@@ -5,8 +5,8 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.example.movies.api.MoviesAPI;
 import com.example.movies.data.Movie;
 import com.example.movies.data.MovieResponse;
-import com.example.movies.repository.AppDatabase;
-import com.example.movies.ui.activity.App;
+import com.example.movies.db.AppDatabase;
+import com.example.movies.App;
 import com.example.movies.views.MovieView;
 
 import java.util.List;

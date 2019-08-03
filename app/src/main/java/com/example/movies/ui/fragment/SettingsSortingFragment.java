@@ -1,4 +1,4 @@
-package com.example.movies.ui.activity.fragment;
+package com.example.movies.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

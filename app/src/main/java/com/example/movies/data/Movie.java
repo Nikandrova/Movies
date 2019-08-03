@@ -256,4 +256,13 @@ public class Movie {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+    public boolean isVideo() {
+        return video;
+    }
+
+    public boolean isAdult() {
+        return adult;
+    }
+
 }

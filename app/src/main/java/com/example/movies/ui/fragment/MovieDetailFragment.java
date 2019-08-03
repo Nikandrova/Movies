@@ -1,4 +1,4 @@
-package com.example.movies.ui.activity.fragment;
+package com.example.movies.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import android.widget.ToggleButton;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.example.movies.R;
 import com.example.movies.data.Movie;
-import com.example.movies.repository.AppDatabase;
+import com.example.movies.db.AppDatabase;
 import com.example.movies.viewmodel.AppExecutors;
 import com.squareup.picasso.Picasso;
 

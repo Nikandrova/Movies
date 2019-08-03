@@ -1,4 +1,4 @@
-package com.example.movies.ui.activity;
+package com.example.movies;
 
 import android.app.Application;
 

@@ -3,7 +3,7 @@ package com.example.movies.viewmodel;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider.NewInstanceFactory;
 
-import com.example.movies.repository.AppDatabase;
+import com.example.movies.db.AppDatabase;
 
 public class AddMovieViewModelFactory extends NewInstanceFactory {
     private final AppDatabase appDatabase;

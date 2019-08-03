@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.movies.data.Movie;
-import com.example.movies.repository.AppDatabase;
+import com.example.movies.db.AppDatabase;
 
 import java.util.List;
 
