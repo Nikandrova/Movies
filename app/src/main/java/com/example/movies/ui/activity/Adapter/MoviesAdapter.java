@@ -13,7 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public /*abstract*/ class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.PosterViewHolder> {
+public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.PosterViewHolder> {
+    private static final String TAG = "MoviesAdapter";
     private List<Movie> movies;
 
     public MoviesAdapter(List<Movie> movies){
@@ -35,8 +36,9 @@ public /*abstract*/ class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapt
     @Override
     public void onBindViewHolder(@NonNull final PosterViewHolder vh, final int index) {
         final Movie currentItem = movies.get(index);
-        String imageUrl = currentItem.getPosterPath();
+        String imageUrl = currentItem.getFullImageUrl();
 
+       // Log.d(TAG, "Trying load image by URL: " + imageUrl + " for child at pos : " + index);
         Picasso.get()
                 .load(imageUrl)
                 .into(vh.ivPoster);
@@ -47,7 +49,11 @@ public /*abstract*/ class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapt
                 onMovieClick(currentItem);
             }
         });
+    }
 
+    public void setMovies(List<Movie> movie) {
+        movies = movie;
+        notifyDataSetChanged();
     }
 
     public void onMovieClick(Movie movie){};
@@ -63,7 +69,6 @@ public /*abstract*/ class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapt
 
         public PosterViewHolder(@NonNull View itemView) {
             super(itemView);
-
             ivPoster = itemView.findViewById(R.id.ivPoster);
         }
     }

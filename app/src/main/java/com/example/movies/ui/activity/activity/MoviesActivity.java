@@ -27,12 +27,14 @@ import java.util.List;
 public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     private static final String MOVIES_TAG = "MOVIES";
 
-    RecyclerView rvPosters;
+    private RecyclerView rvPosters;
+    private MoviesAdapter adapter;
 
     private List<Movie> movies;
 
     @InjectPresenter
     MoviePresenter presenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +66,15 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     public boolean onOptionsItemSelected(MenuItem item) {
         int ind = item.getItemId();
         if(ind == R.id.favorites){
+            initViewsFavoriteMovie();
             Toast.makeText(getApplicationContext(), "favorites",
-                    Toast.LENGTH_LONG);
+                    Toast.LENGTH_LONG).show();
         } else if (ind == R.id.sort){
             SettingsSortingFragment fragment = SettingsSortingFragment.create(presenter);//new SettingsSortingFragment();
             showFragment(fragment, true);
         } else {
             Toast.makeText(getApplicationContext(), "search",
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -101,7 +104,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     }
 
     private void initAdapter(List<Movie> movies) {
-        MoviesAdapter adapter = new MoviesAdapter(movies) {
+        adapter = new MoviesAdapter(movies) {
             @Override
             public void onMovieClick(Movie movie) {
                 MovieDetailFragment fragment = MovieDetailFragment.create(movie);
@@ -124,4 +127,31 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     public void showFragment(Fragment fragment, boolean addToBack) {
         showFragment(fragment, addToBack, R.id.container);
     }
+
+    private void initViewsFavoriteMovie(){
+        presenter.loadFavoriteMovies();
+    }
+
+//    private void getAllFavoriteMovie(){
+//        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+//        viewModel.getFavorite().observe(this, new Observer<List<FavoriteMovieEntry>>() {
+//            @Override
+//            public void onChanged(@Nullable List<FavoriteMovieEntry> favoriteMovieEntries) {
+//                MovieResponse movieResponse = new MovieResponse();
+//                List<Movie> movies = new ArrayList<>();
+//                for (FavoriteMovieEntry entry : favoriteMovieEntries){
+//                    Movie movie = new Movie();
+//                    movie.setIdMovie(entry.getMovieid());
+//                    movie.setOverview(entry.getOverview());
+//                    movie.setTitle(entry.getTitle());
+//                    movie.setPosterPath(entry.getPosterpath());
+//                    movie.setVoteAverage(entry.getUserrating());
+//
+//                    movies.add(movie);
+//                }
+//                movieResponse.setResults(movies);
+//                adapter.setMovies(movies);
+//            }
+//        });
+//    }
 }

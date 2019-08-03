@@ -4,16 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.example.movies.R;
 import com.example.movies.data.Movie;
+import com.example.movies.repository.AppDatabase;
+import com.example.movies.viewmodel.AppExecutors;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -21,6 +26,7 @@ import org.parceler.Parcels;
 public class MovieDetailFragment extends MvpAppCompatFragment {
 
     private static final String MOVIES_KEY = "MOVIES";
+    private AppDatabase appDatabase;
 
     public static MovieDetailFragment create(Movie movie) {
 
@@ -44,7 +50,9 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
         TextView titleMovie, descriptionMovie, ratingMovie, realiseDateMovie;
         ImageView posterMovie;
 
-        Button shareButton = getActivity().findViewById(R.id.bShare);
+        appDatabase = AppDatabase.getInstance(getContext());
+
+        Button shareButton = getActivity().findViewById(R.id.btShare);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +66,27 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
             }
         });
 
+        final Movie movie = Parcels.unwrap(getArguments().getParcelable("MOVIES"));
+
+        ToggleButton toggleButton = getActivity().findViewById(R.id.btFavorites);
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    addFavorite(movie);
+                    Snackbar.make(buttonView, "Added to favorite", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    deleteMovie(movie);
+                    Snackbar.make(buttonView, "Removed from favorite", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         posterMovie = getActivity().findViewById(R.id.ivMoviePoster);
         titleMovie = getActivity().findViewById(R.id.tvTitle);
         descriptionMovie = getActivity().findViewById(R.id.tvOverview);
         ratingMovie = getActivity().findViewById(R.id.tvVoteAverage);
         realiseDateMovie = getActivity().findViewById(R.id.tvReleaseDate);
-
-        Movie movie = Parcels.unwrap(getArguments().getParcelable("MOVIES"));
 
         titleMovie.setText(movie.getTitle());
         descriptionMovie.setText(movie.getOverview());
@@ -72,7 +94,28 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
         realiseDateMovie.setText(movie.getReleaseDate());
 
         Picasso.get()
-                .load(movie.getPosterPath())
+                .load(movie.getFullImageUrl())
                 .into(posterMovie);
+
+        saveMovie(movie);
+    }
+
+    public void saveMovie(final Movie movie) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.movieDao().insertMovie(movie);
+            }
+        });
+    }
+
+    public void addFavorite(final Movie movie) {
+        movie.setFavorite(true);
+        appDatabase.movieDao().update(movie);
+    }
+
+    private void deleteMovie(final Movie movie) {
+        movie.setFavorite(false);
+        appDatabase.movieDao().update(movie);
     }
 }

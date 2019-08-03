@@ -14,11 +14,11 @@ import com.example.movies.presenters.MoviePresenter;
 
 public class SettingsSortingFragment extends MvpAppCompatFragment{
 
-    static MoviePresenter pres;
+    static MoviePresenter moviePresenter;
 
     public static SettingsSortingFragment create(MoviePresenter presenter) {
         SettingsSortingFragment fragment = new SettingsSortingFragment();
-        pres = presenter;
+        moviePresenter = presenter;
         return fragment;
     }
 
@@ -37,10 +37,10 @@ public class SettingsSortingFragment extends MvpAppCompatFragment{
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rdPopularMovies:
-                        pres.loadPopularMovies();
+                        moviePresenter.loadPopularMovies();
                         break;
                     case R.id.rdHeightRatedMovies:
-                        pres.loadHeightRatedMovies();
+                        moviePresenter.loadHeightRatedMovies();
                         break;
                     default:
                         break;

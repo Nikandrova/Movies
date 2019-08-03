@@ -3,9 +3,13 @@ package com.example.movies.presenters;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.movies.api.MoviesAPI;
+import com.example.movies.data.Movie;
 import com.example.movies.data.MovieResponse;
+import com.example.movies.repository.AppDatabase;
 import com.example.movies.ui.activity.App;
 import com.example.movies.views.MovieView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,6 +26,7 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
     @Inject
     MoviesAPI api;
 
+    AppDatabase appDatabase = AppDatabase.getInstance(App.getInstance());
     public MoviePresenter() {
         App.getInstance().getAppComponent().inject(this);
     }
@@ -64,9 +69,30 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
                 });
     }
 
+    public void loadFavoriteMovies(){
+        if (d != null) d.dispose();
+
+        d = appDatabase.movieDao().loadAllFavMovie()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(List<Movie> movies) throws Exception {
+                        getViewState().onDataLoaded(movies);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.fillInStackTrace();
+                    }
+                });
+
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (d != null) d.dispose();
     }
+
 }

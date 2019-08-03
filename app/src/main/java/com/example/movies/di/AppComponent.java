@@ -14,4 +14,10 @@ public interface AppComponent {
     void inject(MoviePresenter moviePresenter);
 
     void inject(App app);
+
+//    void inject(movieDao movieDao);
+//
+//    void inject(AppDatabase appDatabase);
+//
+//    void inject(FavoriteMovieRepository repository);
 }
