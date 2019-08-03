@@ -10,12 +10,12 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 
 @Dao
 public interface MovieDao {
     @Query("SELECT * FROM favoritetable")
-    Single<List<Movie>> loadAllFavMovie();
+    Flowable<List<Movie>> loadAllFavMovie();
 
     @Query("SELECT * FROM favoritetable WHERE title = :title")
     List<Movie> loadAll(String title);

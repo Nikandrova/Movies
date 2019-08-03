@@ -132,26 +132,13 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
         presenter.loadFavoriteMovies();
     }
 
-//    private void getAllFavoriteMovie(){
-//        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-//        viewModel.getFavorite().observe(this, new Observer<List<FavoriteMovieEntry>>() {
-//            @Override
-//            public void onChanged(@Nullable List<FavoriteMovieEntry> favoriteMovieEntries) {
-//                MovieResponse movieResponse = new MovieResponse();
-//                List<Movie> movies = new ArrayList<>();
-//                for (FavoriteMovieEntry entry : favoriteMovieEntries){
-//                    Movie movie = new Movie();
-//                    movie.setIdMovie(entry.getMovieid());
-//                    movie.setOverview(entry.getOverview());
-//                    movie.setTitle(entry.getTitle());
-//                    movie.setPosterPath(entry.getPosterpath());
-//                    movie.setVoteAverage(entry.getUserrating());
-//
-//                    movies.add(movie);
-//                }
-//                movieResponse.setResults(movies);
-//                adapter.setMovies(movies);
-//            }
-//        });
-//    }
+    @Override
+    public void onBackPressed() {
+
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+    }
 }

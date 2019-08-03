@@ -55,6 +55,7 @@ public class Movie {
     String originalTitle;
 
     @SerializedName("genre_ids")
+    @Ignore
     List<Integer> genreIds;
 
     @SerializedName("backdrop_path")
@@ -101,10 +102,10 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public Movie(int id,int voteCount, int idMovie, boolean video, double voteAverage, String title,
+    public Movie(int id, int voteCount, int idMovie, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  String backdropPath, boolean adult, String overview,
-                 String releaseDate, Boolean isFavorite){
+                 String releaseDate, Boolean isFavorite) {
         this.id = id;
         this.voteCount = voteCount;
         this.idMovie = idMovie;
