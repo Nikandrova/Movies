@@ -3,5 +3,5 @@
     <item android:id="@+id/background"
         android:drawable="@android:color/transparent" />
     <item android:id="@+id/toggle"
-        android:drawable="@drawable/ic_toggle" />
+        android:drawable="@drawable/selector_star" />
 </layer-list>

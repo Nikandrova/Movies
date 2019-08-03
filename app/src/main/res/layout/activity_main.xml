@@ -16,7 +16,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         appNs:popupTheme="@style/Theme.AppCompat.Light"
         appNs:title="@string/app_name"
-        appNs:titleTextColor="@color/C1" />
+        appNs:titleTextColor="@color/colorGrey" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvPosters"
