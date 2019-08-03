@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -50,13 +52,13 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
 
         appDatabase = AppDatabase.getInstance(getContext());
 
-        Button shareButton = getView().findViewById(R.id.btShare);
+        ImageButton shareButton = getView().findViewById(R.id.btShare);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String shareBody = "Обязательно осмотрю этот фильм";
+                String shareBody = "Обязательно посмотрю этот фильм";
                 String shareSub = "Ого!";
                 intent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
                 intent.putExtra(Intent.EXTRA_TEXT, shareBody);
@@ -67,18 +69,18 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
         final Movie movie = Parcels.unwrap(getArguments().getParcelable("MOVIES"));
 
         ToggleButton btnFavourites = getView().findViewById(R.id.btFavorites);
-//        btnFavourites.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    addFavorite(movie);
-//                    Snackbar.make(buttonView, "Added to favorite", Snackbar.LENGTH_SHORT).show();
-//                } else {
-//                    deleteMovie(movie);
-//                    Snackbar.make(buttonView, "Removed from favorite", Snackbar.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        btnFavourites.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    addFavorite(movie);
+                    Snackbar.make(buttonView, "Added to favorite", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    deleteMovie(movie);
+                    Snackbar.make(buttonView, "Removed from favorite", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         posterMovie = getActivity().findViewById(R.id.ivMoviePoster);
         titleMovie = getActivity().findViewById(R.id.tvTitle);

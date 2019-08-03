@@ -8,6 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">true</item>
     </style>
+    <style name="App"/>
+
+    <style name="App.Text">
+        <item name="android:textColor">@color/colorTextMain</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="App.Text.Subtitle">
+        <item name="android:textSize">@dimen/text_subtitle_size</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="App.Text.Title">
+        <item name="android:textSize">@dimen/text_title_size</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     
     <style name="ShareBurron" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:background">@color/colorPrimary</item>
