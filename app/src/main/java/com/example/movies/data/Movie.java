@@ -19,7 +19,7 @@ public class Movie {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     @NonNull
-    private int id;
+    private int index;
 
     @SerializedName("vote_count")
     @ColumnInfo(name = "voteCount")
@@ -102,11 +102,11 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public Movie(int id, int voteCount, int idMovie, boolean video, double voteAverage, String title,
+    public Movie(int index, int voteCount, int idMovie, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  String backdropPath, boolean adult, String overview,
                  String releaseDate, Boolean isFavorite) {
-        this.id = id;
+        this.index = index;
         this.voteCount = voteCount;
         this.idMovie = idMovie;
         this.video = video;
@@ -123,12 +123,12 @@ public class Movie {
         this.isFavorite = isFavorite;
     }
 
-    public int getId() {
-        return id;
+    public int getIndex() {
+        return index;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIndex(int id) {
+        this.index = id;
     }
 
     public void setFavorite(Boolean favorite) {
