@@ -1,11 +1,11 @@
 package com.example.movies.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,11 +16,8 @@ import com.example.movies.R;
 import com.example.movies.data.Movie;
 import com.example.movies.presenters.MoviePresenter;
 import com.example.movies.ui.adapter.MoviesAdapter;
-import com.example.movies.ui.fragment.MovieDetailFragment;
-import com.example.movies.ui.fragment.SettingsSortingFragment;
+import com.example.movies.ui.fragment.MovieDetailActivity;
 import com.example.movies.views.MovieView;
-
-import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -30,11 +27,8 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     private RecyclerView rvPosters;
     private MoviesAdapter adapter;
 
-    private List<Movie> movies;
-
     @InjectPresenter
     MoviePresenter presenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +36,38 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.tbMainActivity);
-        setSupportActionBar(toolbar);
-
         rvPosters = findViewById(R.id.rvPosters);
         rvPosters.setLayoutManager(new GridLayoutManager(this, 2));
 
-        if (savedInstanceState != null) {
-            movies = Parcels.unwrap(savedInstanceState.getParcelable(MOVIES_TAG));
-            initAdapter(movies);
-        } else {
-            presenter.loadPopularMovies();
-        }
+        presenter.loadPopularMovies();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.btmNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.popularity:
+                                presenter.loadPopularMovies();
+                                Toast.makeText(getApplicationContext(), "POPULARITY",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.top:
+                                presenter.loadHeightRatedMovies();
+                                Toast.makeText(getApplicationContext(), "TOP",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.favorites:
+                                presenter.loadFavoriteMovies();
+                                Toast.makeText(getApplicationContext(), "favorites",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            default:
+                                break;
+                        }
+                        return false;
+                    }
+                });
     }
 
     @Override
@@ -63,44 +77,24 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int ind = item.getItemId();
-        if(ind == R.id.favorites){
-            initViewsFavoriteMovie();
-            Toast.makeText(getApplicationContext(), "favorites",
-                    Toast.LENGTH_LONG).show();
-        } else if (ind == R.id.sort){
-            SettingsSortingFragment fragment = SettingsSortingFragment.create(presenter);//new SettingsSortingFragment();
-            showFragment(fragment, true);
-        } else {
-            Toast.makeText(getApplicationContext(), "search",
-                    Toast.LENGTH_SHORT).show();
-        }
-        return true;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(MOVIES_TAG, Parcels.wrap(movies));
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
     }
 
     @Override
-    public void onDataLoaded(List<Movie> movies) {
-        this.movies = movies;
+    public void onPopularLoaded(List<Movie> movies) {
         initAdapter(movies);
     }
 
     @Override
-    public void onDataLoadedMovie(Movie movie) {
-       //int pos = movies.indexOf(movie);
-       // movies.set(pos, movie);
+    public void onTopLoaded(List<Movie> movies) {
+        initAdapter(movies);
+    }
+
+    @Override
+    public void onMovieLoadedFromDB(List<Movie> movies) {
+        initAdapter(movies);
     }
 
     @Override
@@ -113,30 +107,27 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
         adapter = new MoviesAdapter(movies) {
             @Override
             public void onMovieClick(Movie movie) {
-                MovieDetailFragment fragment = MovieDetailFragment.create(movie, presenter);
-                showFragment(fragment, true);
+                Intent intent = new Intent(MoviesActivity.this, MovieDetailActivity.class);
+                intent.putExtra("idMovieDetail", movie.getIdMovie());
+                startActivity(intent);
             }
         };
         rvPosters.setAdapter(adapter);
     }
 
-    public void showFragment(Fragment fragment, boolean addToBack, int containerId) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-        transaction.replace(containerId, fragment, fragment.getClass().getName());
-        if (addToBack) {
-            transaction.addToBackStack(null);
-        }
-        transaction.commitAllowingStateLoss();
-    }
-
-    public void showFragment(Fragment fragment, boolean addToBack) {
-        showFragment(fragment, addToBack, R.id.container);
-    }
-
-    private void initViewsFavoriteMovie(){
-        presenter.loadFavoriteMovies();
-    }
+//    public void showFragment(Fragment fragment, boolean addToBack, int containerId) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+//        transaction.replace(containerId, fragment, fragment.getClass().getName());
+//        if (addToBack) {
+//            transaction.addToBackStack(null);
+//        }
+//        transaction.commitAllowingStateLoss();
+//    }
+//
+//    public void showFragment(Fragment fragment, boolean addToBack) {
+//        showFragment(fragment, addToBack, R.id.container);
+//    }
 
     @Override
     public void onBackPressed() {

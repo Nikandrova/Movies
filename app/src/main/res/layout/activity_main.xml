@@ -8,25 +8,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activity.MoviesActivity">
 
-    <android.support.v7.widget.Toolbar xmlns:appNs="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/tbMainActivity"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        appNs:popupTheme="@style/Theme.AppCompat.Light"
-        appNs:title="@string/app_name"
-        appNs:titleTextColor="@color/colorGrey" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvPosters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="8dp"
+        android:layout_marginTop="@dimen/control_margin"
+        android:layout_marginBottom="@dimen/control_margin"
+        android:paddingBottom="@dimen/control_margin"
+        android:paddingTop="@dimen/control_margin"
+        app:layout_constraintBottom_toTopOf="@+id/btmNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbMainActivity" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/btmNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemTextColor="@color/colorGrey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -10,10 +10,13 @@ import java.util.List;
 public interface MovieView extends MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy.class)
-    void onDataLoaded(List<Movie> movies);
+    void onPopularLoaded(List<Movie> movies);
 
     @StateStrategyType(OneExecutionStateStrategy.class)
-    void onDataLoadedMovie(Movie movie);
+    void onTopLoaded(List<Movie> movies);
+
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void onMovieLoadedFromDB(List<Movie> movies);
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void onError(Throwable t);

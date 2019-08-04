@@ -11,13 +11,12 @@ import com.example.movies.data.Movie;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 @Dao
 public interface MovieDao {
     @Query("SELECT * FROM favoritetable")
-    Flowable<List<Movie>> loadAllFavMovie();
+    Single<List<Movie>> loadAllFavMovie();
 
     @Query("SELECT * FROM favoritetable WHERE title = :title")
     List<Movie> loadAll(String title);

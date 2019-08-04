@@ -78,6 +78,9 @@ public class Movie {
     @ColumnInfo(name = "isFavorite")
     boolean isFavorite;
 
+    @ColumnInfo(name = "type")
+    int type;
+
     @Ignore
     public Movie() {
     }
@@ -86,7 +89,7 @@ public class Movie {
     public Movie(int voteCount, int id, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  List<Integer> genreIds, String backdropPath, boolean adult, String overview,
-                 String releaseDate) {
+                 String releaseDate, int type) {
         this.voteCount = voteCount;
         this.idMovie = id;
         this.video = video;
@@ -101,12 +104,13 @@ public class Movie {
         this.adult = adult;
         this.overview = overview;
         this.releaseDate = releaseDate;
+        this.type = type;
     }
 
     public Movie(int index, int voteCount, int idMovie, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  String backdropPath, boolean adult, String overview,
-                 String releaseDate, Boolean isFavorite) {
+                 String releaseDate, boolean isFavorite, int type) {
         this.index = index;
         this.voteCount = voteCount;
         this.idMovie = idMovie;
@@ -122,6 +126,7 @@ public class Movie {
         this.overview = overview;
         this.releaseDate = releaseDate;
         this.isFavorite = isFavorite;
+        this.type = type;
     }
 
     public int getIndex() {
@@ -266,4 +271,13 @@ public class Movie {
         return adult;
     }
 
+    //1 - топовый, 0 - популярный
+    public int getType() {
+        return type;
+    }
+
+    //1 - топовый, 0 - популярный
+    public void setType(int type) {
+        this.type = type;
+    }
 }
