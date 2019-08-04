@@ -1,6 +1,5 @@
 package com.example.movies.db;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -13,6 +12,7 @@ import com.example.movies.data.Movie;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface MovieDao {
@@ -34,6 +34,6 @@ public interface MovieDao {
     @Query("DELETE FROM favoritetable WHERE idMovie = :movie_id")
     void deleteMovieWithId(int movie_id);
 
-    @Query("SELECT * FROM favoritetable WHERE id = :id")
-    LiveData<Movie> loadMovieById(int id);
+    @Query("SELECT * FROM favoritetable WHERE idMovie = :movie_id")
+    Single<Movie> loadMovieById(int movie_id);
 }

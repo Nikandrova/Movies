@@ -18,6 +18,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.example.movies.R;
 import com.example.movies.data.Movie;
 import com.example.movies.db.AppDatabase;
+import com.example.movies.presenters.MoviePresenter;
 import com.example.movies.viewmodel.AppExecutors;
 import com.squareup.picasso.Picasso;
 
@@ -27,13 +28,14 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
 
     private static final String MOVIES_KEY = "MOVIES";
     private AppDatabase appDatabase;
+    static MoviePresenter moviePresenter;
 
-    public static MovieDetailFragment create(Movie movie) {
-
+    public static MovieDetailFragment create(Movie movie, MoviePresenter presenter) {
         Bundle args = new Bundle();
         args.putParcelable(MOVIES_KEY, Parcels.wrap(movie));
         MovieDetailFragment fragment = new MovieDetailFragment();
         fragment.setArguments(args);
+        moviePresenter = presenter;
         return fragment;
     }
 
@@ -68,7 +70,13 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
 
         final Movie movie = Parcels.unwrap(getArguments().getParcelable("MOVIES"));
 
-        ToggleButton btnFavourites = getView().findViewById(R.id.btFavorites);
+        final ToggleButton btnFavourites = getView().findViewById(R.id.btFavorites);
+
+        moviePresenter.loadFavMovie(movie);
+        if(movie.isFavorite()){
+            btnFavourites.setChecked(true);
+        }
+
         btnFavourites.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -96,8 +104,6 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
         Picasso.get()
                 .load(movie.getFullImageUrl())
                 .into(posterMovie);
-
-        saveMovie(movie);
     }
 
     public void saveMovie(final Movie movie) {
@@ -110,12 +116,14 @@ public class MovieDetailFragment extends MvpAppCompatFragment {
     }
 
     public void addFavorite(final Movie movie) {
-        movie.setFavorite(true);
+        movie.isFavorite(true);
+        saveMovie(movie);
         appDatabase.movieDao().update(movie);
     }
 
     private void deleteMovie(final Movie movie) {
-        movie.setFavorite(false);
+        movie.isFavorite(false);
+        appDatabase.movieDao().deleteMovie(movie);
         appDatabase.movieDao().update(movie);
     }
 }

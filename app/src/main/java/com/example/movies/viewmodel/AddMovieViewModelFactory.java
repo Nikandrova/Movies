@@ -1,6 +1,5 @@
 package com.example.movies.viewmodel;
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider.NewInstanceFactory;
 
 import com.example.movies.db.AppDatabase;
@@ -14,9 +13,9 @@ public class AddMovieViewModelFactory extends NewInstanceFactory {
         mFavoriteId = favoriteId;
     }
 
-    @Override
-    public <T extends ViewModel> T create(Class<T> modelClass) {
-        //noinspection unchecked
-        return (T) new AddMovieViewModel(appDatabase, mFavoriteId);
-    }
+//    @Override
+//    public <T extends ViewModel> T create(Class<T> modelClass) {
+//        //noinspection unchecked
+//        return (T) new AddMovieViewModel(appDatabase, mFavoriteId);
+//    }
 }

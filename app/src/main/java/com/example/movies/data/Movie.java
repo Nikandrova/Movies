@@ -3,6 +3,7 @@ package com.example.movies.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -13,7 +14,7 @@ import org.parceler.Parcel;
 import java.util.List;
 
 @Parcel
-@Entity(tableName = "favoritetable")
+@Entity(tableName = "favoritetable", indices = @Index(value = {"idMovie"}, unique = true))
 public class Movie {
 
     @PrimaryKey(autoGenerate = true)
@@ -75,7 +76,7 @@ public class Movie {
     String releaseDate;
 
     @ColumnInfo(name = "isFavorite")
-    Boolean isFavorite;
+    boolean isFavorite;
 
     @Ignore
     public Movie() {
@@ -131,11 +132,11 @@ public class Movie {
         this.index = id;
     }
 
-    public void setFavorite(Boolean favorite) {
+    public void isFavorite(boolean favorite) {
         isFavorite = favorite;
     }
 
-    public Boolean getFavorite() {
+    public boolean isFavorite() {
         return isFavorite;
     }
 

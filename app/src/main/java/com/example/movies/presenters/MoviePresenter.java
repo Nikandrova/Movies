@@ -89,6 +89,24 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
 
     }
 
+    public void loadFavMovie(Movie movie){
+        if (d != null) d.dispose();
+        d = appDatabase.movieDao().loadMovieById(movie.getIdMovie())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Movie>() {
+                    @Override
+                    public void accept(Movie movie) throws Exception {
+                        getViewState().onDataLoadedMovie(movie);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.fillInStackTrace();
+                    }
+                });
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

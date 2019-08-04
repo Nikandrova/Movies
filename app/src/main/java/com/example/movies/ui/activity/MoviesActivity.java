@@ -98,6 +98,12 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     }
 
     @Override
+    public void onDataLoadedMovie(Movie movie) {
+       //int pos = movies.indexOf(movie);
+       // movies.set(pos, movie);
+    }
+
+    @Override
     public void onError(Throwable t) {
         String errorMessage = "An error occurred during networking: " + t.getMessage();
         Toast.makeText(MoviesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
@@ -107,7 +113,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
         adapter = new MoviesAdapter(movies) {
             @Override
             public void onMovieClick(Movie movie) {
-                MovieDetailFragment fragment = MovieDetailFragment.create(movie);
+                MovieDetailFragment fragment = MovieDetailFragment.create(movie, presenter);
                 showFragment(fragment, true);
             }
         };

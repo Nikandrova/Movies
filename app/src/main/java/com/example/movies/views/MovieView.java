@@ -12,8 +12,8 @@ public interface MovieView extends MvpView {
     @StateStrategyType(OneExecutionStateStrategy.class)
     void onDataLoaded(List<Movie> movies);
 
-//    @StateStrategyType(OneExecutionStateStrategy.class)
-//    void onDatabaseLoaded(List<FavoriteMovieEntry> favoriteMovieEntries);
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void onDataLoadedMovie(Movie movie);
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void onError(Throwable t);
