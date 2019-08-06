@@ -25,6 +25,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     private static final String MOVIES_TAG = "MOVIES";
 
     private RecyclerView rvPosters;
+    private BottomNavigationView bottomNavigationView;
     private MoviesAdapter adapter;
 
     @InjectPresenter
@@ -38,10 +39,8 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
 
         rvPosters = findViewById(R.id.rvPosters);
         rvPosters.setLayoutManager(new GridLayoutManager(this, 2));
+        bottomNavigationView = findViewById(R.id.btmNavigationView);
 
-        presenter.loadPopularMovies();
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.btmNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -49,16 +48,19 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
                         switch (menuItem.getItemId()) {
                             case R.id.popularity:
                                 presenter.loadPopularMovies();
+                                menuItem.setChecked(false);
                                 Toast.makeText(getApplicationContext(), "POPULARITY",
                                         Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.top:
                                 presenter.loadHeightRatedMovies();
+                                menuItem.setChecked(false);
                                 Toast.makeText(getApplicationContext(), "TOP",
                                         Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.favorites:
                                 presenter.loadFavoriteMovies();
+                                menuItem.setChecked(true);
                                 Toast.makeText(getApplicationContext(), "favorites",
                                         Toast.LENGTH_SHORT).show();
                                 break;
@@ -68,12 +70,14 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
                         return false;
                     }
                 });
+
+        presenter.loadPopularMovies();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
+    protected void onResume() {
+        super.onResume();
+        checkedItemSelectedMenu();
     }
 
     @Override
@@ -131,11 +135,19 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
 
     @Override
     public void onBackPressed() {
-
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             super.onBackPressed();
         } else {
             getSupportFragmentManager().popBackStack();
+        }
+    }
+
+    public void checkedItemSelectedMenu() {
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        if(menuItem.isChecked()){
+            presenter.loadFavoriteMovies();
+            menuItem.setChecked(false);
         }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -21,8 +22,8 @@ import com.example.movies.views.MovieDetailView;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDetailView {
+    private static final String TAG = "DetailActivity";
 
-    private static final String MOVIES_KEY = "MOVIES";
     ToggleButton btnFavourites;
     ImageButton shareButton;
     TextView titleMovie, descriptionMovie, ratingMovie, realiseDateMovie;
@@ -37,21 +38,25 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
         setContentView(R.layout.activity_movie);
-
-        btnFavourites = findViewById(R.id.btFavorites);
-        shareButton = findViewById(R.id.btShare);
-        posterMovie = findViewById(R.id.ivMoviePoster);
-        titleMovie = findViewById(R.id.tvTitle);
-        descriptionMovie = findViewById(R.id.tvOverview);
-        ratingMovie = findViewById(R.id.tvVoteAverage);
-        realiseDateMovie = findViewById(R.id.tvReleaseDate);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        setContentView(R.layout.activity_movie);
+
         Bundle arguments = getIntent().getExtras();
         idMovie = Integer.parseInt(arguments.get("idMovieDetail").toString());
+
+        btnFavourites = findViewById(R.id.btFavorites);
+        shareButton = findViewById(R.id.btShare);
+        if(shareButton == null) Log.d(TAG, " " + shareButton + " = shareBTN");
+        posterMovie = findViewById(R.id.ivMoviePoster);
+        titleMovie = findViewById(R.id.tvTitle);
+        descriptionMovie = findViewById(R.id.tvOverview);
+        ratingMovie = findViewById(R.id.tvVoteAverage);
+        realiseDateMovie = findViewById(R.id.tvReleaseDate);
+
         movieDetailPresenter.getFavoriteMovie(idMovie);
     }
 
@@ -82,6 +87,7 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
                     Snackbar.make(buttonView, "Added to favorite", Snackbar.LENGTH_SHORT).show();
                 } else {
                     movieDetailPresenter.deleteFavoriteMovie(movie);
+
                     Snackbar.make(buttonView, "Removed from favorite", Snackbar.LENGTH_SHORT).show();
                 }
             }
