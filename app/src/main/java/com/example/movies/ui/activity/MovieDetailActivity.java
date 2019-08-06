@@ -1,4 +1,4 @@
-package com.example.movies.ui.fragment;
+package com.example.movies.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

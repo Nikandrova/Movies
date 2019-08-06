@@ -44,7 +44,7 @@ public class MovieRepository {
 
     private Single<List<Movie>> loadPopularMoviesFromServer() {
         return api.provide()
-                .getPopularMovies("5d190a4676660309ee5187b997f90f2c")
+                .getPopularMovies("5d190a4676660309ee5187b997f90f2c", 1)
                 .map(new Function<MovieResponse, List<Movie>>() {
                     @Override
                     public List<Movie> apply(MovieResponse movieResponse) throws Exception {
@@ -63,7 +63,7 @@ public class MovieRepository {
 
     public Single<List<Movie>> loadHeightRatedMovies() {
         return api.provide()
-                .getTopRatedMovies("5d190a4676660309ee5187b997f90f2c")
+                .getTopRatedMovies("5d190a4676660309ee5187b997f90f2c", 1)
                 .map(new Function<MovieResponse, List<Movie>>() {
                     @Override
                     public List<Movie> apply(MovieResponse movieResponse) throws Exception {

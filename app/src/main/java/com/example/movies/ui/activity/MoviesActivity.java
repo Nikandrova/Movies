@@ -16,7 +16,6 @@ import com.example.movies.R;
 import com.example.movies.data.Movie;
 import com.example.movies.presenters.MoviePresenter;
 import com.example.movies.ui.adapter.MoviesAdapter;
-import com.example.movies.ui.fragment.MovieDetailActivity;
 import com.example.movies.views.MovieView;
 
 import java.util.List;
