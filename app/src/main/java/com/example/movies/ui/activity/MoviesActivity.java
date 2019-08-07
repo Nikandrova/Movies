@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,13 @@ import java.util.List;
 
 public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     private static final String MOVIES_TAG = "MOVIES";
+    private final static int START_PAGE = 1;
+    private int TOTAL_PAGE = 20;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int CURRENT_PAGE = START_PAGE;
+
+    private int typeLoad = 0;
 
     private RecyclerView rvPosters;
     private BottomNavigationView bottomNavigationView;
@@ -38,21 +46,49 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
 
         rvPosters = findViewById(R.id.rvPosters);
         rvPosters.setLayoutManager(new GridLayoutManager(this, 2));
-        bottomNavigationView = findViewById(R.id.btmNavigationView);
 
+        rvPosters.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                int firstVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= TOTAL_PAGE) {
+                        if(typeLoad == 0) {
+                            CURRENT_PAGE++;
+                            presenter.loadPopularMovies(CURRENT_PAGE);
+                        } else{
+                            CURRENT_PAGE++;
+                            presenter.loadHeightRatedMovies(CURRENT_PAGE);
+                        }
+                    }
+                }
+            }
+        });
+
+        bottomNavigationView = findViewById(R.id.btmNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.popularity:
-                                presenter.loadPopularMovies();
+                                CURRENT_PAGE = START_PAGE;
+                                typeLoad = 0;
+                                presenter.loadPopularMovies(CURRENT_PAGE);
                                 menuItem.setChecked(false);
                                 Toast.makeText(getApplicationContext(), "POPULARITY",
                                         Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.top:
-                                presenter.loadHeightRatedMovies();
+                                CURRENT_PAGE = START_PAGE;
+                                typeLoad = 1;
+                                presenter.loadHeightRatedMovies(CURRENT_PAGE);
                                 menuItem.setChecked(false);
                                 Toast.makeText(getApplicationContext(), "TOP",
                                         Toast.LENGTH_SHORT).show();
@@ -69,8 +105,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
                         return false;
                     }
                 });
-
-        presenter.loadPopularMovies();
+        presenter.loadPopularMovies(CURRENT_PAGE);
     }
 
     @Override
@@ -107,15 +142,19 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     }
 
     private void initAdapter(List<Movie> movies) {
-        adapter = new MoviesAdapter(movies) {
-            @Override
-            public void onMovieClick(Movie movie) {
-                Intent intent = new Intent(MoviesActivity.this, MovieDetailActivity.class);
-                intent.putExtra("idMovieDetail", movie.getIdMovie());
-                startActivity(intent);
-            }
-        };
-        rvPosters.setAdapter(adapter);
+        if (adapter == null || CURRENT_PAGE == 1) {
+            adapter = new MoviesAdapter(movies) {
+                @Override
+                public void onMovieClick(Movie movie) {
+                    Intent intent = new Intent(MoviesActivity.this, MovieDetailActivity.class);
+                    intent.putExtra("idMovieDetail", movie.getIdMovie());
+                    startActivity(intent);
+                }
+            };
+            rvPosters.setAdapter(adapter);
+        } else {
+            adapter.setMovies(movies);
+        }
     }
 
 //    public void showFragment(Fragment fragment, boolean addToBack, int containerId) {

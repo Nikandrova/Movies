@@ -27,9 +27,9 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
         return new MoviePresenter();
     }
 
-    public void loadPopularMovies() {
+    public void loadPopularMovies(int page) {
         MovieDisposble = repository
-                .getPopularityMovies()
+                .getPopularityMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
@@ -45,8 +45,8 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
                 });
     }
 
-    public void loadHeightRatedMovies() {
-        MovieDisposble = repository.getTopMovies()
+    public void loadHeightRatedMovies(int page) {
+     MovieDisposble = repository.getTopMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {

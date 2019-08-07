@@ -35,40 +35,54 @@ public class MovieRepository {
     List<Movie> favoriteListMovies;
     Movie favoriteMovie;
 
-    public Single<List<Movie>> getPopularityMovies() {
+    public Single<List<Movie>> getPopularityMovies(int page) {
+        int lastpage = 1;
         if (popularityMovies == null || popularityMovies.size() == 0) {
-            return loadPopularMoviesFromServer();
+            return loadPopularMoviesFromServer(page);
+        } else if(page >= lastpage){
+            lastpage = page;
+            return  loadPopularMoviesFromServer(page);
         } else
             return Single.just(popularityMovies);
     }
 
-    private Single<List<Movie>> loadPopularMoviesFromServer() {
+    private Single<List<Movie>> loadPopularMoviesFromServer(final int page) {
         return api.provide()
-                .getPopularMovies("5d190a4676660309ee5187b997f90f2c", 1)
+                .getPopularMovies("5d190a4676660309ee5187b997f90f2c", page)
                 .map(new Function<MovieResponse, List<Movie>>() {
                     @Override
                     public List<Movie> apply(MovieResponse movieResponse) throws Exception {
-                        setPopularityMovies(movieResponse.getResults());
-                        return movieResponse.getResults();
+                        if(page == 1)
+                            setPopularityMovies(movieResponse.getResults());
+                        else
+                            addPopularityMovies(movieResponse.getResults());
+                        return popularityMovies;
                     }
                 });
     }
 
-    public Single<List<Movie>> getTopMovies() {
+    public Single<List<Movie>> getTopMovies(int page) {
+        int lastpage = 1;
         if (topMovies == null || topMovies.size() == 0) {
-            return loadHeightRatedMovies();
+            return loadHeightRatedMovies(page);
+        } else if (page >= lastpage) {
+            lastpage = page;
+            return loadHeightRatedMovies(page);
         } else
             return Single.just(topMovies);
     }
 
-    public Single<List<Movie>> loadHeightRatedMovies() {
+    public Single<List<Movie>> loadHeightRatedMovies(final int page) {
         return api.provide()
-                .getTopRatedMovies("5d190a4676660309ee5187b997f90f2c", 1)
+                .getTopRatedMovies("5d190a4676660309ee5187b997f90f2c", page)
                 .map(new Function<MovieResponse, List<Movie>>() {
                     @Override
                     public List<Movie> apply(MovieResponse movieResponse) throws Exception {
-                        setTopMovies(movieResponse.getResults());
-                        return movieResponse.getResults();
+                        if(page == 1)
+                            setTopMovies(movieResponse.getResults());
+                        else
+                            addTopMovies(movieResponse.getResults());
+                        return topMovies;
                     }
                 });
     }
@@ -119,12 +133,28 @@ public class MovieRepository {
         }
     }
 
+    public void addPopularityMovies(List<Movie> popularityMovies){
+        for (Movie movie : popularityMovies) {
+            movie.setType(0);
+            saveMovie(movie);
+        }
+        this.popularityMovies.addAll(popularityMovies);
+    }
+
     private void setTopMovies(List<Movie> topMovie) {
         this.topMovies = topMovie;
         for (Movie movie : topMovie) {
             movie.setType(1);
             saveMovie(movie);
         }
+    }
+
+    public  void addTopMovies(List<Movie> topMovies){
+        for (Movie movie : topMovies) {
+            movie.setType(1);
+            saveMovie(movie);
+        }
+        this.topMovies.addAll(topMovies);
     }
 
     private void setFavoriteListMovies(List<Movie> favoriteMovie) {
