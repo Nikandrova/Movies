@@ -1,6 +1,7 @@
 package com.example.movies.ui.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -71,6 +72,10 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
             }
         });
 
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            rvPosters.setLayoutManager(new GridLayoutManager(this, 3));
+        }
+
         bottomNavigationView = findViewById(R.id.btmNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -118,6 +123,17 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putAll(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override

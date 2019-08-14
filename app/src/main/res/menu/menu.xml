@@ -3,13 +3,16 @@
     <item
         android:id="@+id/popularity"
         android:title="Популярные"
-        android:enabled="true"/>
+        android:enabled="true"
+        android:icon="@drawable/ic_popularity"/>
     <item
         android:id="@+id/top"
         android:title="Топовые"
-        android:enabled="true"/>
+        android:enabled="true"
+        android:icon="@drawable/ic_top"/>
     <item
         android:id="@+id/favorites"
         android:title="Избранное"
-        android:enabled="true" />
+        android:enabled="true"
+        android:icon="@drawable/ic_star_unchecked"/>
 </menu>
