@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Movies</string>
+    <string name="rate">Рейтинг</string>
+    <string name="share">Поделиться</string>
 </resources>

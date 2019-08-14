@@ -8,16 +8,14 @@
     android:fillViewport="true">
 
 <android.support.constraint.ConstraintLayout
-    android:background="@color/C1"
+    android:background="@color/colorGrey"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/ivMoviePoster"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="350dp"
+        android:id="@+id/ivMoviePoster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,29 +23,31 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
+        style="@style/App.Text.Title"
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/control_margin"
+        android:layout_marginTop="@dimen/control_margin"
+        android:layout_marginEnd="@dimen/control_margin"
         android:text="null"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivMoviePoster"
         tools:ignore="MissingConstraints" />
 
     <TextView
+        style="@style/App.Text.Subtitle"
         android:id="@+id/tvTitleOverview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="@dimen/control_margin"
+        android:layout_marginTop="@dimen/control_margin"
+        android:layout_marginEnd="@dimen/control_margin"
         android:text="Описание"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleVoteAverage"
         tools:ignore="MissingConstraints" />
@@ -56,45 +56,39 @@
         android:id="@+id/tvOverview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="@dimen/control_margin"
+        android:layout_marginTop="@dimen/control_margin"
+        android:layout_marginEnd="@dimen/control_margin"
         android:text="null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleOverview" />
 
     <TextView
         android:id="@+id/tvTitleVoteAverage"
+        style="@style/App.Text.Subtitle"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Рейтинг"
+        android:layout_marginStart="@dimen/control_margin"
+        android:text="@string/rate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bShare" />
+        app:layout_constraintTop_toBottomOf="@+id/btFavorites" />
 
     <TextView
         android:id="@+id/tvVoteAverage"
         android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:layout_marginEnd="@dimen/control_margin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.908"
-        app:layout_constraintStart_toEndOf="@+id/tvTitleVoteAverage"
-        app:layout_constraintTop_toBottomOf="@+id/btFavorites" />
+        app:layout_constraintTop_toTopOf="@+id/tvTitleVoteAverage" />
 
     <TextView
         android:id="@+id/tvReleaseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="@dimen/control_margin"
+        android:layout_marginEnd="@dimen/control_margin"
+        android:layout_marginBottom="@dimen/control_margin"
         android:text="null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,30 +96,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
 
-    <Button
-        android:id="@+id/bShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+    <ImageButton
+        android:id="@+id/btShare"
+        android:layout_width="@dimen/btn_size"
+        android:layout_height="@dimen/btn_size"
+        android:background="@color/colorTransparent"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/control_margin"
+        android:src="@android:drawable/ic_menu_share"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivMoviePoster" />
+
+    <ToggleButton
+        android:id="@+id/btFavorites"
+        android:layout_width="@dimen/btn_size_star"
+        android:layout_height="@dimen/btn_size_star"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Поделиться"
-        app:layout_constraintEnd_toStartOf="@+id/btFavorites"
-        app:layout_constraintHorizontal_bias="0.828"
+        android:drawablePadding="16dp"
+        android:background="@drawable/selector_star"
+        android:textOn=""
+        android:textOff=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
-    <com.github.ivbaranov.mfb.MaterialFavoriteButton
-        android:id="@+id/btFavorites"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="120dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-        app:mfb_color="white" />
 
 </android.support.constraint.ConstraintLayout>
-
 </ScrollView>

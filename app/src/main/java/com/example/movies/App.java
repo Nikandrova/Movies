@@ -1,4 +1,4 @@
-package com.example.movies.ui.activity;
+package com.example.movies;
 
 import android.app.Application;
 
@@ -31,6 +31,7 @@ public class App extends Application {
     private void initAppComponent() {
         component = DaggerAppComponent.builder()
                 .appModule(new AppModule())
+//                .roomModule(new RoomModule(this))
                 .build();
     }
 

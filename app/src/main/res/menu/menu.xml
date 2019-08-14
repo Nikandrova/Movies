@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Отсортировать"
-        android:id="@+id/sort"/>
+        android:id="@+id/popularity"
+        android:title="Популярные"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/top"
+        android:title="Топовые"
+        android:enabled="true"/>
     <item
         android:id="@+id/favorites"
-        android:title="Избранное"/>
-    <item
-        android:id="@+id/search"
-        android:title="Найти"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_search"/>
-
+        android:title="Избранное"
+        android:enabled="true" />
 </menu>

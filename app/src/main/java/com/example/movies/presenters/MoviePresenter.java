@@ -2,12 +2,11 @@ package com.example.movies.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.movies.api.MoviesAPI;
-import com.example.movies.data.MovieResponse;
-import com.example.movies.ui.activity.App;
+import com.example.movies.data.Movie;
+import com.example.movies.repository.MovieRepository;
 import com.example.movies.views.MovieView;
 
-import javax.inject.Inject;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -17,56 +16,66 @@ import io.reactivex.schedulers.Schedulers;
 @InjectViewState
 public class MoviePresenter extends MvpPresenter<MovieView> {
 
-    private Disposable d;
-
-    @Inject
-    MoviesAPI api;
+    MovieRepository repository = MovieRepository.getInstance();
+    Disposable MovieDisposble;
 
     public MoviePresenter() {
-        App.getInstance().getAppComponent().inject(this);
+        //App.getInstance().getAppComponent().inject(this);
     }
 
-    public void loadPopularMovies() {
-        if (d != null) d.dispose();
-        d = api.provide()
-                .getPopularMovies("5d190a4676660309ee5187b997f90f2c")
+    public static MoviePresenter getInstance() {
+        return new MoviePresenter();
+    }
+
+    public void loadPopularMovies(int page) {
+        MovieDisposble = repository
+                .getPopularityMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieResponse>() {
+                .subscribe(new Consumer<List<Movie>>() {
                     @Override
-                    public void accept(MovieResponse movieResponse) {
-                        getViewState().onDataLoaded(movieResponse.getResults());
+                    public void accept(List<Movie> movies) {
+                        getViewState().onPopularLoaded(movies);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) {
-                        getViewState().onError(throwable);
+                        throwable.fillInStackTrace();
                     }
                 });
     }
 
-    public void loadHeightRatedMovies() {
-        if (d != null) d.dispose();
-        d = api.provide()
-                .getTopRatedMovies("5d190a4676660309ee5187b997f90f2c")
+    public void loadHeightRatedMovies(int page) {
+     MovieDisposble = repository.getTopMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieResponse>() {
+                .subscribe(new Consumer<List<Movie>>() {
                     @Override
-                    public void accept(MovieResponse movieResponse) {
-                        getViewState().onDataLoaded(movieResponse.getResults());
+                    public void accept(List<Movie> movies) throws Exception {
+                        getViewState().onTopLoaded(movies);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) {
-                        getViewState().onError(throwable);
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.fillInStackTrace();
                     }
                 });
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (d != null) d.dispose();
+    public void loadFavoriteMovies() {
+        MovieDisposble = repository.getFavoriteListMovies()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(List<Movie> movies) throws Exception {
+                        getViewState().onMovieLoadedFromDB(movies);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.fillInStackTrace();
+                    }
+                });
     }
 }

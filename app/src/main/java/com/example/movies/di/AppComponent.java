@@ -1,7 +1,7 @@
 package com.example.movies.di;
 
 import com.example.movies.presenters.MoviePresenter;
-import com.example.movies.ui.activity.App;
+import com.example.movies.App;
 
 import javax.inject.Singleton;
 
@@ -14,4 +14,10 @@ public interface AppComponent {
     void inject(MoviePresenter moviePresenter);
 
     void inject(App app);
+
+//    void inject(movieDao movieDao);
+//
+//    void inject(AppDatabase appDatabase);
+//
+//    void inject(FavoriteMovieRepository repository);
 }
