@@ -6,6 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -152,6 +153,12 @@ public class Movie {
     }
 
     public String getFullImageUrl() {
+        if(posterPath == null)
+            return "https://www.google.com/imgres?imgurl=http%3A%2F%2Fwhite.kz%2Fassets%2Fimg%2F" +
+                    "logo_records.svg&imgrefurl=http%3A%2F%2Fwhite.kz%2F&docid=koZoCayEVyAAKM&tbnid" +
+                    "=gmGZqaPHA6O6rM%3A&vet=10ahUKEwjj2u2txYLkAhVD1qYKHXeJAucQMwhQKAMwAw..i&w=457&h" +
+                    "=800&bih=686&biw=1440&q=white&ved=0ahUKEwjj2u2txYLkAhVD1qYKHXeJAucQMwhQKAMwAw&" +
+                    "iact=mrc&uact=8";
         return imagesUrl.concat(posterPath);
     }
 

@@ -2,6 +2,7 @@ package com.example.movies.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.PosterView
         final Movie currentItem = movies.get(index);
         String imageUrl = currentItem.getFullImageUrl();
 
-       // Log.d(TAG, "Trying load image by URL: " + imageUrl + " for child at pos : " + index);
+        //Log.d(TAG, "Trying load image by URL: " + imageUrl + " for child at pos : " + index);
         Picasso.get()
                 .load(imageUrl)
                 .into(vh.ivPoster);

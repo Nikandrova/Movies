@@ -57,9 +57,9 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
                 int firstVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
 
                 if (!isLoading && !isLastPage) {
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                    if (((visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
                             && firstVisibleItemPosition >= 0
-                            && totalItemCount >= TOTAL_PAGE) {
+                            && totalItemCount >= (TOTAL_PAGE - 4)) {
                         if(typeLoad == 0) {
                             CURRENT_PAGE++;
                             presenter.loadPopularMovies(CURRENT_PAGE);

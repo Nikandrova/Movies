@@ -33,14 +33,15 @@ public class MovieRepository {
     List<Movie> popularityMovies;
     List<Movie> topMovies;
     List<Movie> favoriteListMovies;
-    Movie favoriteMovie;
+
+    private int lastPagePopularityMovies = 1;
+    private int lastPageTopMovies = 1;
 
     public Single<List<Movie>> getPopularityMovies(int page) {
-        int lastpage = 1;
         if (popularityMovies == null || popularityMovies.size() == 0) {
             return loadPopularMoviesFromServer(page);
-        } else if(page >= lastpage){
-            lastpage = page;
+        } else if(page > lastPagePopularityMovies){
+            lastPagePopularityMovies++;
             return  loadPopularMoviesFromServer(page);
         } else
             return Single.just(popularityMovies);
@@ -62,11 +63,10 @@ public class MovieRepository {
     }
 
     public Single<List<Movie>> getTopMovies(int page) {
-        int lastpage = 1;
         if (topMovies == null || topMovies.size() == 0) {
             return loadHeightRatedMovies(page);
-        } else if (page >= lastpage) {
-            lastpage = page;
+        } else if (page > lastPageTopMovies) {
+            lastPageTopMovies++;
             return loadHeightRatedMovies(page);
         } else
             return Single.just(topMovies);
