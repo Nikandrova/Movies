@@ -46,8 +46,6 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
     TextView titleMovie, descriptionMovie, ratingMovie, realiseDateMovie;
     ViewPager viewPager;
 
-    String movieId;
-
     YouTubePlayerView  youTubePlayerView;
     PagerImgTrailerAdapter imgTrailerAdapter;
 
