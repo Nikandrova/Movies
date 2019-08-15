@@ -2,8 +2,8 @@ package com.example.movies.data;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TrailersMovie {
-    private int id;
+public class TrailerMovie {
+    private String id;
 
     @SerializedName("iso_639_1")
     private String iso6391;
@@ -17,11 +17,11 @@ public class TrailersMovie {
     private int size;
     private String type;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

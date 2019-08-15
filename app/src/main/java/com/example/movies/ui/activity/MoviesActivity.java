@@ -44,7 +44,6 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
         rvPosters = findViewById(R.id.rvPosters);
         rvPosters.setLayoutManager(new GridLayoutManager(this, 2));
 

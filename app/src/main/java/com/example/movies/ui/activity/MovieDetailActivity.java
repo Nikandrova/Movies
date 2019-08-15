@@ -3,10 +3,14 @@ package com.example.movies.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,8 +22,21 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.movies.R;
 import com.example.movies.data.Movie;
 import com.example.movies.presenters.MovieDetailPresenter;
+import com.example.movies.ui.adapter.MoviesAdapter;
+import com.example.movies.ui.adapter.PagerImgTrailerAdapter;
+import com.example.movies.ui.fragment.PosterFragment;
+import com.example.movies.ui.fragment.TrailerFragment;
 import com.example.movies.views.MovieDetailView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDetailView {
     private static final String TAG = "DetailActivity";
@@ -27,7 +44,12 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
     ToggleButton btnFavourites;
     ImageButton shareButton;
     TextView titleMovie, descriptionMovie, ratingMovie, realiseDateMovie;
-    ImageView posterMovie;
+    ViewPager viewPager;
+
+    String movieId;
+
+    YouTubePlayerView  youTubePlayerView;
+    PagerImgTrailerAdapter imgTrailerAdapter;
 
     @InjectPresenter
     MovieDetailPresenter movieDetailPresenter;
@@ -51,7 +73,15 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
         btnFavourites = findViewById(R.id.btFavorites);
         shareButton = findViewById(R.id.btShare);
         if(shareButton == null) Log.d(TAG, " " + shareButton + " = shareBTN");
-        posterMovie = findViewById(R.id.ivMoviePoster);
+        viewPager = findViewById(R.id.vpPosterTrailer);
+
+        List<Fragment> fragmentList = new ArrayList<>();
+        fragmentList.add(new PosterFragment());
+        fragmentList.add(new TrailerFragment());
+
+        imgTrailerAdapter = new PagerImgTrailerAdapter(getSupportFragmentManager(), fragmentList);
+        viewPager.setAdapter(imgTrailerAdapter);
+
         titleMovie = findViewById(R.id.tvTitle);
         descriptionMovie = findViewById(R.id.tvOverview);
         ratingMovie = findViewById(R.id.tvVoteAverage);
@@ -100,6 +130,28 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
 
         Picasso.get()
                 .load(movie.getFullImageUrl())
-                .into(posterMovie);
+                .into((ImageView) findViewById(R.id.ivMoviePoster));
+
+        movieDetailPresenter.getTrailerMovie(movie);
+
+        youTubePlayerView = findViewById(R.id.pvTrailer);
+        getLifecycle().addObserver(youTubePlayerView);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer youTubePlayer) {
+                youTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer.loadVideo(movie.getKeyTrailer(), 0);
+
+                    }
+                });
+            }
+        }, true);
     }
+
+    @Override
+    public void onTrailerMovie(String movieId) { }
+
 }

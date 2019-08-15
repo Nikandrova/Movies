@@ -12,29 +12,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpPosterTrailer"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:id="@+id/ivMoviePoster"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:ignore="MissingConstraints" />
 
     <TextView
-        style="@style/App.Text.Title"
         android:id="@+id/tvTitle"
+        style="@style/App.Text.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/control_margin_16dp"
-        android:layout_marginTop="@dimen/control_margin_16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="@dimen/control_margin_16dp"
         android:text="null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivMoviePoster"
+        app:layout_constraintTop_toBottomOf="@+id/vpPosterTrailer"
         tools:ignore="MissingConstraints" />
 
     <TextView
