@@ -7,13 +7,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -45,9 +48,13 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
     ImageButton shareButton;
     TextView titleMovie, descriptionMovie, ratingMovie, realiseDateMovie;
     ViewPager viewPager;
+    YouTubePlayerView youTubePlayerView;
 
-    YouTubePlayerView  youTubePlayerView;
     PagerImgTrailerAdapter imgTrailerAdapter;
+
+    LinearLayout sliderDotsPanel;
+    private int dotsCount;
+    private ImageView[] dots;
 
     @InjectPresenter
     MovieDetailPresenter movieDetailPresenter;
@@ -76,9 +83,33 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new PosterFragment());
         fragmentList.add(new TrailerFragment());
-
         imgTrailerAdapter = new PagerImgTrailerAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(imgTrailerAdapter);
+
+        sliderDotsPanel = findViewById(R.id.llSliderDots);
+        dotsCount = imgTrailerAdapter.getCount();
+
+        createDotsForSlider();
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for(int i =0; i < dotsCount; i++)
+                    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.ic_no_active_dot));
+
+                dots[position].setImageDrawable(getResources().getDrawable(R.drawable.ic_active_dot));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
         titleMovie = findViewById(R.id.tvTitle);
         descriptionMovie = findViewById(R.id.tvOverview);
@@ -126,22 +157,21 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
         ratingMovie.setText(String.valueOf(movie.getVoteAverage()));
         realiseDateMovie.setText(movie.getReleaseDate());
 
+        movieDetailPresenter.getTrailerMovie(movie);
+
         Picasso.get()
                 .load(movie.getFullImageUrl())
                 .into((ImageView) findViewById(R.id.ivMoviePoster));
 
-        movieDetailPresenter.getTrailerMovie(movie);
-
         youTubePlayerView = findViewById(R.id.pvTrailer);
         getLifecycle().addObserver(youTubePlayerView);
-
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
             @Override
             public void onInitSuccess(@NonNull final YouTubePlayer youTubePlayer) {
                 youTubePlayer.addListener(new AbstractYouTubePlayerListener() {
                     @Override
                     public void onReady() {
-                        youTubePlayer.loadVideo(movie.getKeyTrailer(), 0);
+                            youTubePlayer.loadVideo(movie.getKeyTrailer(), 1);
 
                     }
                 });
@@ -152,4 +182,17 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
     @Override
     public void onTrailerMovie(String movieId) { }
 
+    private void createDotsForSlider(){
+        dots = new ImageView[dotsCount];
+        for(int i = 0; i < dotsCount; i++){
+            dots[i] = new ImageView(this);
+            dots[i].setImageDrawable(getResources().getDrawable(R.drawable.ic_no_active_dot));
+
+            ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            //params.setMargins(R.dimen.control_margin_8dp, 0, R.dimen.control_margin_8dp, 0);
+            sliderDotsPanel.addView(dots[i], params);
+        }
+        dots[0].setImageDrawable(getResources().getDrawable(R.drawable.ic_active_dot));
+    }
 }
