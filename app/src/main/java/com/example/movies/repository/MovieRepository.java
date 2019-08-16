@@ -4,6 +4,8 @@ import com.example.movies.App;
 import com.example.movies.api.MoviesAPI;
 import com.example.movies.data.Movie;
 import com.example.movies.data.MovieResponse;
+import com.example.movies.data.TrailerMovie;
+import com.example.movies.data.TrailerMovieResponce;
 import com.example.movies.db.AppDatabase;
 import com.example.movies.viewmodel.AppExecutors;
 
@@ -45,6 +47,25 @@ public class MovieRepository {
             return  loadPopularMoviesFromServer(page);
         } else
             return Single.just(popularityMovies);
+    }
+
+    public Single<String> loadTrailerMovie(final Movie movie){
+        return api.provide()
+                .getTrailersMovie(String.valueOf(movie.getIdMovie()), "5d190a4676660309ee5187b997f90f2c")
+                .map(new Function<TrailerMovieResponce, String>() {
+                    @Override
+                    public String apply(TrailerMovieResponce trailerMovieResponce) throws Exception {
+                        for (TrailerMovie trailerMovie:trailerMovieResponce.getResults()) {
+                            if(trailerMovie.getSite().compareTo("YouTube") == 0)
+                                if(trailerMovie.getType().compareTo("Trailer") == 0){
+                                    movie.setKeyTrailer(trailerMovie.getKey());
+                                    appDatabase.movieDao().update(movie);
+                                    return trailerMovie.getKey();
+                                }
+                        }
+                        return null;
+                    }
+                });
     }
 
     private Single<List<Movie>> loadPopularMoviesFromServer(final int page) {
@@ -173,4 +194,6 @@ public class MovieRepository {
         movie.isFavorite(false);
         appDatabase.movieDao().update(movie);
     }
+
+
 }

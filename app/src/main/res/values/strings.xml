@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Movies</string>
     <string name="rate">Рейтинг</string>
+    <string name="releaseDate">Дата релиза</string>
+    <string name="overview">Описание</string>
     <string name="share">Поделиться</string>
 </resources>

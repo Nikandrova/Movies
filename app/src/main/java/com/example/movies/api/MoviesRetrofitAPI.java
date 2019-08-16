@@ -1,6 +1,8 @@
 package com.example.movies.api;
 
 import com.example.movies.data.MovieResponse;
+import com.example.movies.data.TrailerMovie;
+import com.example.movies.data.TrailerMovieResponce;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
@@ -17,6 +19,6 @@ public interface MoviesRetrofitAPI {
                                            @Query("page") int pageIndex);
 
    @GET("movie/{movie_id}/videos")
-   Single<MovieResponse> getTrailersMovie(@Path("movie_id") Integer movieId,
-                                          @Query("api_key") String apiKey);
+   Single<TrailerMovieResponce> getTrailersMovie(@Path("movie_id") String movieId,
+                                                 @Query("api_key") String apiKey);
 }

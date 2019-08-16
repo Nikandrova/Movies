@@ -82,6 +82,9 @@ public class Movie {
     @ColumnInfo(name = "type")
     int type;
 
+    @ColumnInfo(name = "keyTrailer")
+    String keyTrailer;
+
     @Ignore
     public Movie() {
     }
@@ -90,7 +93,7 @@ public class Movie {
     public Movie(int voteCount, int id, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  List<Integer> genreIds, String backdropPath, boolean adult, String overview,
-                 String releaseDate, int type) {
+                 String releaseDate, int type, String keyTrailer) {
         this.voteCount = voteCount;
         this.idMovie = id;
         this.video = video;
@@ -106,6 +109,7 @@ public class Movie {
         this.overview = overview;
         this.releaseDate = releaseDate;
         this.type = type;
+        this.keyTrailer = keyTrailer;
     }
 
     public Movie(int index, int voteCount, int idMovie, boolean video, double voteAverage, String title,
@@ -286,5 +290,13 @@ public class Movie {
     //1 - топовый, 0 - популярный
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getKeyTrailer() {
+        return keyTrailer;
+    }
+
+    public void setKeyTrailer(String keyTrailer) {
+        this.keyTrailer = keyTrailer;
     }
 }

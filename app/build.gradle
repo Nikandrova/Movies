@@ -69,4 +69,8 @@ dependencies {
     implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.5'
     implementation 'com.android.support:design:28.0.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'com.android.support:support-v4:28.0.0'
+
+    //youtube player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:8.0.1'
 }

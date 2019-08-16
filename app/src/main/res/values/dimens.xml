@@ -7,4 +7,5 @@
     <dimen name="control_margin_8dp">8dp</dimen>
     <dimen name="btn_size_star">50dp</dimen>
     <dimen name="btn_size">50dp</dimen>
+    <dimen name="dot_size">12dp</dimen>
 </resources>
