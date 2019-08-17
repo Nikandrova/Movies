@@ -30,8 +30,6 @@ public class App extends Application {
 
     private void initAppComponent() {
         component = DaggerAppComponent.builder()
-                .appModule(new AppModule())
-//                .roomModule(new RoomModule(this))
                 .build();
     }
 

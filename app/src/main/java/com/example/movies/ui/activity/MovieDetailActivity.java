@@ -171,7 +171,7 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
                 youTubePlayer.addListener(new AbstractYouTubePlayerListener() {
                     @Override
                     public void onReady() {
-                            youTubePlayer.loadVideo(movie.getKeyTrailer(), 1);
+                            youTubePlayer.cueVideo(movie.getKeyTrailer(), 0);
 
                     }
                 });

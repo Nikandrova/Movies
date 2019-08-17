@@ -2,10 +2,12 @@ package com.example.movies.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.movies.api.MoviesAPI;
+import com.example.movies.App;
 import com.example.movies.data.Movie;
 import com.example.movies.repository.MovieRepository;
 import com.example.movies.views.MovieDetailView;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -14,12 +16,13 @@ import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
 public class MovieDetailPresenter extends MvpPresenter<MovieDetailView>{
+    @Inject
+    MovieRepository repository;// = MovieRepository.getInstance();
 
-    MoviesAPI api = new MoviesAPI();
-    MovieRepository repository = MovieRepository.getInstance();
     Disposable disposble;
 
     public MovieDetailPresenter() {
+        App.getInstance().getAppComponent().inject(this);
     }
 
     public static MovieDetailPresenter getInstance() {
@@ -44,7 +47,7 @@ public class MovieDetailPresenter extends MvpPresenter<MovieDetailView>{
     }
 
     public void getTrailerMovie(Movie movie) {
-        disposble = repository.loadTrailerMovie(movie)
+        disposble = repository.getMovieTrailer(movie)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {

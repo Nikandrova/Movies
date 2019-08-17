@@ -1,7 +1,11 @@
 package com.example.movies.di;
 
+import com.example.movies.api.MoviesAPI;
+import com.example.movies.db.AppDatabase;
+import com.example.movies.presenters.MovieDetailPresenter;
 import com.example.movies.presenters.MoviePresenter;
 import com.example.movies.App;
+import com.example.movies.repository.MovieRepository;
 
 import javax.inject.Singleton;
 
@@ -15,9 +19,11 @@ public interface AppComponent {
 
     void inject(App app);
 
+    void inject(MoviesAPI moviesAPI);
+
+    void inject(MovieDetailPresenter movieDetailPresenter);
+
 //    void inject(movieDao movieDao);
 //
-//    void inject(AppDatabase appDatabase);
-//
-//    void inject(FavoriteMovieRepository repository);
+    void inject(MovieRepository repository);
 }

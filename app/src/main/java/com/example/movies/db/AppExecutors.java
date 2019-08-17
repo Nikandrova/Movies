@@ -1,4 +1,4 @@
-package com.example.movies.viewmodel;
+package com.example.movies.db;
 
 import android.os.Handler;
 import android.os.Looper;
