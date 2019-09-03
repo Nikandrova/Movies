@@ -2,6 +2,7 @@ package com.example.movies.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.movies.App;
 import com.example.movies.data.Movie;
 import com.example.movies.repository.MovieRepository;
@@ -19,15 +20,12 @@ import io.reactivex.schedulers.Schedulers;
 @InjectViewState
 public class MoviePresenter extends MvpPresenter<MovieView> {
     @Inject
-    MovieRepository repository;// = MovieRepository.getInstance();
+    MovieRepository repository;
+
     Disposable movieDisposble;
 
     public MoviePresenter() {
         App.getInstance().getAppComponent().inject(this);
-    }
-
-    public static MoviePresenter getInstance() {
-        return new MoviePresenter();
     }
 
     public void loadPopularMovies(int page) {

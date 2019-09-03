@@ -20,20 +20,24 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "favorite";
     private  static AppDatabase sInstance;
 
-    public static AppDatabase getInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                Log.d(LOG_TAG, "Creating new database instance");
-                sInstance = Room.databaseBuilder(context.getApplicationContext(),
-                        AppDatabase.class, AppDatabase.DATABASE_NAME)
-                        .fallbackToDestructiveMigration()
-                        .allowMainThreadQueries()
-                        .build();
-            }
-        }
-        Log.d(LOG_TAG, "Getting the database instance");
-        return sInstance;
-    }
+//    public static AppDatabase getInstance(Context context) {
+//        if (sInstance == null) {
+//            synchronized (LOCK) {
+//                Log.d(LOG_TAG, "Creating new database instance");
+//                sInstance = Room.databaseBuilder(context.getApplicationContext(),
+//                        AppDatabase.class, AppDatabase.DATABASE_NAME)
+//                        .fallbackToDestructiveMigration()
+//                        .allowMainThreadQueries()
+//                        .build();
+//            }
+//        }
+//        Log.d(LOG_TAG, "Getting the database instance");
+//        return sInstance;
+//    }
+
+//    public AppDatabase(){
+//        App.getInstance().getAppComponent().inject(this);
+//    }
 
     public abstract MovieDao movieDao();
 }

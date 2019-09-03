@@ -35,7 +35,7 @@ public class Movie {
     boolean video;
 
     @ColumnInfo(name = "voteAvarage")
-    @SerializedName("vote_avarage")
+    @SerializedName("vote_average")
     double voteAverage;
 
     @ColumnInfo(name = "title")

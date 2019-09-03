@@ -77,7 +77,6 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
 
         btnFavourites = findViewById(R.id.btFavorites);
         shareButton = findViewById(R.id.btShare);
-        if(shareButton == null) Log.d(TAG, " " + shareButton + " = shareBTN");
         viewPager = findViewById(R.id.vpPosterTrailer);
 
         List<Fragment> fragmentList = new ArrayList<>();
@@ -121,7 +120,7 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
 
     @Override
     public void onFavoriteMovieLoaded(final Movie movie) {
-        if(movie.isFavorite()){
+        if (movie.isFavorite()) {
             btnFavourites.setChecked(true);
         }
 
@@ -157,12 +156,11 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
         ratingMovie.setText(String.valueOf(movie.getVoteAverage()));
         realiseDateMovie.setText(movie.getReleaseDate());
 
-        movieDetailPresenter.getTrailerMovie(movie);
-
         Picasso.get()
                 .load(movie.getFullImageUrl())
                 .into((ImageView) findViewById(R.id.ivMoviePoster));
 
+        movieDetailPresenter.getTrailerMovie(movie);
         youTubePlayerView = findViewById(R.id.pvTrailer);
         getLifecycle().addObserver(youTubePlayerView);
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
@@ -171,8 +169,8 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
                 youTubePlayer.addListener(new AbstractYouTubePlayerListener() {
                     @Override
                     public void onReady() {
-                            youTubePlayer.cueVideo(movie.getKeyTrailer(), 0);
-
+                        Log.d("movieTrailer", movie.getKeyTrailer());
+                        youTubePlayer.cueVideo(movie.getKeyTrailer(), 0);
                     }
                 });
             }
@@ -190,7 +188,6 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
 
             ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            //params.setMargins(R.dimen.control_margin_8dp, 0, R.dimen.control_margin_8dp, 0);
             sliderDotsPanel.addView(dots[i], params);
         }
         dots[0].setImageDrawable(getResources().getDrawable(R.drawable.ic_active_dot));

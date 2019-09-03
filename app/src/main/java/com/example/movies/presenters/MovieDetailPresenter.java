@@ -17,16 +17,12 @@ import io.reactivex.schedulers.Schedulers;
 @InjectViewState
 public class MovieDetailPresenter extends MvpPresenter<MovieDetailView>{
     @Inject
-    MovieRepository repository;// = MovieRepository.getInstance();
+    MovieRepository repository;
 
     Disposable disposble;
 
     public MovieDetailPresenter() {
         App.getInstance().getAppComponent().inject(this);
-    }
-
-    public static MovieDetailPresenter getInstance() {
-        return new MovieDetailPresenter();
     }
 
     public void getFavoriteMovie(int id){
