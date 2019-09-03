@@ -23,7 +23,6 @@ import com.example.movies.views.MovieView;
 import java.util.List;
 
 public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
-    private static final String MOVIES_TAG = "MOVIES";
     private final static int START_PAGE = 1;
     private int TOTAL_PAGE = 20;
     private boolean isLoading = false;

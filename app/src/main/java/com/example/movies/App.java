@@ -5,6 +5,8 @@ import android.app.Application;
 import com.example.movies.di.AppComponent;
 import com.example.movies.di.AppModule;
 import com.example.movies.di.DaggerAppComponent;
+import com.example.movies.di.DatabaseModule;
+import com.example.movies.repository.MovieRepository;
 
 public class App extends Application {
 
@@ -30,8 +32,8 @@ public class App extends Application {
 
     private void initAppComponent() {
         component = DaggerAppComponent.builder()
-                .appModule(new AppModule())
-//                .roomModule(new RoomModule(this))
+                .appModule(new AppModule(getInstance()))
+                .databaseModule(new DatabaseModule(getInstance()))
                 .build();
     }
 

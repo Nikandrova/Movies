@@ -1,6 +1,6 @@
 package com.example.movies.di;
 
-import com.example.movies.api.MoviesAPI;
+import com.example.movies.App;
 
 import javax.inject.Singleton;
 
@@ -9,10 +9,15 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
+    App mApplication;
+
+    public AppModule(App application) {
+        mApplication = application;
+    }
 
     @Provides
     @Singleton
-    MoviesAPI provideMoviesApi() {
-        return new MoviesAPI();
+    App providesApplication() {
+        return mApplication;
     }
 }

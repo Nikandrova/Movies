@@ -2,11 +2,15 @@ package com.example.movies.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.example.movies.App;
 import com.example.movies.data.Movie;
 import com.example.movies.repository.MovieRepository;
 import com.example.movies.views.MovieView;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -15,20 +19,17 @@ import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
 public class MoviePresenter extends MvpPresenter<MovieView> {
+    @Inject
+    MovieRepository repository;
 
-    MovieRepository repository = MovieRepository.getInstance();
-    Disposable MovieDisposble;
+    Disposable movieDisposble;
 
     public MoviePresenter() {
-        //App.getInstance().getAppComponent().inject(this);
-    }
-
-    public static MoviePresenter getInstance() {
-        return new MoviePresenter();
+        App.getInstance().getAppComponent().inject(this);
     }
 
     public void loadPopularMovies(int page) {
-        MovieDisposble = repository
+        movieDisposble = repository
                 .getPopularityMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -46,7 +47,7 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
     }
 
     public void loadHeightRatedMovies(int page) {
-     MovieDisposble = repository.getTopMovies(page)
+     movieDisposble = repository.getTopMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
@@ -63,7 +64,7 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
     }
 
     public void loadFavoriteMovies() {
-        MovieDisposble = repository.getFavoriteListMovies()
+        movieDisposble = repository.getFavoriteListMovies()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {

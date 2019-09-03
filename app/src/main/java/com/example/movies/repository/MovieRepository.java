@@ -7,30 +7,27 @@ import com.example.movies.data.MovieResponse;
 import com.example.movies.data.TrailerMovie;
 import com.example.movies.data.TrailerMovieResponce;
 import com.example.movies.db.AppDatabase;
-import com.example.movies.viewmodel.AppExecutors;
+import com.example.movies.db.AppExecutors;
+import com.example.movies.db.MovieDao;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 
 public class MovieRepository {
-
     //@Inject
     MoviesAPI api = new MoviesAPI();
 
-    private Disposable d;
+    private final MovieDao movieDao;
 
-    private MovieRepository() {
+    public MovieRepository(MovieDao movieDao) {
+        this.movieDao = movieDao;//App.getInstance().getAppComponent().inject(this);
     }
-
-    public static MovieRepository getInstance() {
-        return new MovieRepository();
-    }
-
-    AppDatabase appDatabase = AppDatabase.getInstance(App.getInstance());
 
     List<Movie> popularityMovies;
     List<Movie> topMovies;
@@ -47,25 +44,6 @@ public class MovieRepository {
             return  loadPopularMoviesFromServer(page);
         } else
             return Single.just(popularityMovies);
-    }
-
-    public Single<String> loadTrailerMovie(final Movie movie){
-        return api.provide()
-                .getTrailersMovie(String.valueOf(movie.getIdMovie()), "5d190a4676660309ee5187b997f90f2c")
-                .map(new Function<TrailerMovieResponce, String>() {
-                    @Override
-                    public String apply(TrailerMovieResponce trailerMovieResponce) throws Exception {
-                        for (TrailerMovie trailerMovie:trailerMovieResponce.getResults()) {
-                            if(trailerMovie.getSite().compareTo("YouTube") == 0)
-                                if(trailerMovie.getType().compareTo("Trailer") == 0){
-                                    movie.setKeyTrailer(trailerMovie.getKey());
-                                    appDatabase.movieDao().update(movie);
-                                    return trailerMovie.getKey();
-                                }
-                        }
-                        return null;
-                    }
-                });
     }
 
     private Single<List<Movie>> loadPopularMoviesFromServer(final int page) {
@@ -116,7 +94,7 @@ public class MovieRepository {
     }
 
     public Single<List<Movie>> loadMoviesFromDB() {
-        return appDatabase.movieDao().loadAllFavMovie().map(new Function<List<Movie>, List<Movie>>() {
+        return /*appDatabase.movieDao().*/movieDao.loadAllFavMovie().map(new Function<List<Movie>, List<Movie>>() {
             @Override
             public List<Movie> apply(List<Movie> moviesFromDB) throws Exception {
                 List<Movie> onlyFav = new ArrayList<>();
@@ -129,8 +107,39 @@ public class MovieRepository {
         });
     }
 
+    public Single<String> getMovieTrailer(Movie movie){
+        if(movie.getKeyTrailer() == null){
+            return loadMovieTrailer(movie);
+        } else{
+            return Single.just(movie.getKeyTrailer());
+        }
+    }
+
+    public Single<String> loadMovieTrailer(final Movie movie){
+        return api.provide()
+                .getTrailersMovie(String.valueOf(movie.getIdMovie()), "5d190a4676660309ee5187b997f90f2c")
+                .map(new Function<TrailerMovieResponce, String>() {
+                    @Override
+                    public String apply(TrailerMovieResponce trailerMovieResponce) throws Exception {
+                        for (TrailerMovie trailerMovie : trailerMovieResponce.getResults()) {
+                            if (trailerMovie.getSite().compareTo("YouTube") == 0)
+                                if (trailerMovie.getType().compareTo("Trailer") == 0) {
+                                    movie.setKeyTrailer(trailerMovie.getKey());
+                                    /*appDatabase.movieDao().*/movieDao.update(movie);
+                                    return trailerMovie.getKey();
+                                }
+                        }
+                        if (movie.getKeyTrailer() == null) {
+                            movie.setKeyTrailer(trailerMovieResponce.getResults().get(0).getKey());
+                            return trailerMovieResponce.getResults().get(0).getKey();
+                        }
+                        return null;
+                    }
+                });
+    }
+
     public Single<Movie> loadFavoriteMovieFromDB(int id){
-        return appDatabase.movieDao().loadMovieById(id);
+        return /*appDatabase.movieDao().*/movieDao.loadMovieById(id);
     }
 
     public Single<Movie> getFavoriteMovieFromDB(int id){
@@ -141,7 +150,7 @@ public class MovieRepository {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                appDatabase.movieDao().insertMovie(movie);
+                /*appDatabase.movieDao().*/movieDao.insertMovie(movie);
             }
         });
     }
@@ -187,13 +196,11 @@ public class MovieRepository {
 
     public void addFavoriteToDB(final Movie movie) {
         movie.isFavorite(true);
-        appDatabase.movieDao().update(movie);
+        /*appDatabase.movieDao().*/movieDao.update(movie);
     }
 
     public void deleteMovieFromDB(final Movie movie) {
         movie.isFavorite(false);
-        appDatabase.movieDao().update(movie);
+        /*appDatabase.movieDao().*/movieDao.update(movie);
     }
-
-
 }
