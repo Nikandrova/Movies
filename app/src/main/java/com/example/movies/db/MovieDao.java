@@ -15,11 +15,11 @@ import io.reactivex.Single;
 
 @Dao
 public interface MovieDao {
-    @Query("SELECT * FROM favoritetable")
-    Single<List<Movie>> loadAllFavMovie();
+    @Query("SELECT * FROM movies")
+    Single<List<Movie>> loadAllMovie();
 
-    @Query("SELECT * FROM favoritetable WHERE title = :title")
-    List<Movie> loadAll(String title);
+    @Query("SELECT * FROM movies WHERE title = :title")
+    List<Movie> loadMovieWithTitle(String title);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMovie(Movie movie);
@@ -30,9 +30,12 @@ public interface MovieDao {
     @Delete
     void deleteMovie(Movie movie);
 
-    @Query("DELETE FROM favoritetable WHERE idMovie = :movie_id")
+    @Query("DELETE FROM movies WHERE idMovie = :movie_id")
     void deleteMovieWithId(int movie_id);
 
-    @Query("SELECT * FROM favoritetable WHERE idMovie = :movie_id")
+    @Query("SELECT * FROM movies WHERE idMovie = :movie_id")
     Single<Movie> loadMovieById(int movie_id);
+
+    @Query("SELECT * FROM movies WHERE idMovie = :movie_id")
+    Movie loadMovieFromDB(int movie_id);
 }

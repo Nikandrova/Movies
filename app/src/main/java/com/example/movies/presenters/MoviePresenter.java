@@ -47,7 +47,7 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
     }
 
     public void loadHeightRatedMovies(int page) {
-     movieDisposble = repository.getTopMovies(page)
+        movieDisposble = repository.getTopMovies(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {

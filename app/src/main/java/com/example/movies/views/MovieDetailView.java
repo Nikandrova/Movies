@@ -7,7 +7,7 @@ import com.example.movies.data.Movie;
 
 public interface MovieDetailView extends MvpView {
     @StateStrategyType(OneExecutionStateStrategy.class)
-    void onFavoriteMovieLoaded(Movie movie);
+    void onMovieDetailLoaded(Movie movie);
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void onTrailerMovie(String movieId);

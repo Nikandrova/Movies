@@ -162,6 +162,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
                 public void onMovieClick(Movie movie) {
                     Intent intent = new Intent(MoviesActivity.this, MovieDetailActivity.class);
                     intent.putExtra("idMovieDetail", movie.getIdMovie());
+                    intent.putExtra("urlPosterMovieDetail", movie.getFullImageUrl());
                     startActivity(intent);
                 }
             };

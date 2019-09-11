@@ -1,10 +1,13 @@
 package com.example.movies.data;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -15,7 +18,7 @@ import org.parceler.Parcel;
 import java.util.List;
 
 @Parcel
-@Entity(tableName = "favoritetable", indices = @Index(value = {"idMovie"}, unique = true))
+@Entity(tableName = "movies", indices = @Index(value = {"idMovie"}, unique = true))
 public class Movie {
 
     @PrimaryKey(autoGenerate = true)
@@ -80,7 +83,7 @@ public class Movie {
     boolean isFavorite;
 
     @ColumnInfo(name = "type")
-    int type;
+    String type;
 
     @ColumnInfo(name = "keyTrailer")
     String keyTrailer;
@@ -93,7 +96,7 @@ public class Movie {
     public Movie(int voteCount, int id, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  List<Integer> genreIds, String backdropPath, boolean adult, String overview,
-                 String releaseDate, int type, String keyTrailer) {
+                 String releaseDate, String type, String keyTrailer) {
         this.voteCount = voteCount;
         this.idMovie = id;
         this.video = video;
@@ -115,7 +118,7 @@ public class Movie {
     public Movie(int index, int voteCount, int idMovie, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  String backdropPath, boolean adult, String overview,
-                 String releaseDate, boolean isFavorite, int type) {
+                 String releaseDate, boolean isFavorite, String type) {
         this.index = index;
         this.voteCount = voteCount;
         this.idMovie = idMovie;
@@ -283,13 +286,13 @@ public class Movie {
     }
 
     //1 - топовый, 0 - популярный
-    public int getType() {
+    public String getType() {
         return type;
     }
 
     //1 - топовый, 0 - популярный
-    public void setType(int type) {
-        this.type = type;
+    public void setType(TypeMovie type) {
+        this.type = type.toString();
     }
 
     public String getKeyTrailer() {

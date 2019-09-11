@@ -32,7 +32,7 @@ public class MovieDetailPresenter extends MvpPresenter<MovieDetailView>{
                 .subscribe(new Consumer<Movie>() {
                     @Override
                     public void accept(Movie movie) throws Exception {
-                        getViewState().onFavoriteMovieLoaded(movie);
+                        getViewState().onMovieDetailLoaded(movie);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -42,8 +42,8 @@ public class MovieDetailPresenter extends MvpPresenter<MovieDetailView>{
                 });
     }
 
-    public void getTrailerMovie(Movie movie) {
-        disposble = repository.getMovieTrailer(movie)
+    public void getTrailerMovie(int idMovie) {
+        disposble = repository.getMovieTrailer(idMovie)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
@@ -66,4 +66,6 @@ public class MovieDetailPresenter extends MvpPresenter<MovieDetailView>{
     public void deleteFavoriteMovie(Movie movie){
         repository.deleteMovieFromDB(movie);
     }
+
+    public Movie getMovie(int id) {return repository.getMovieFromDB(id);}
 }

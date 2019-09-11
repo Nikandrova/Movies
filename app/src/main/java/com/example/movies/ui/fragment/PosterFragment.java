@@ -10,9 +10,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.movies.R;
+import com.squareup.picasso.Picasso;
 
 public class PosterFragment extends Fragment {
     ImageView imageView;
+    static String url;
+
+    public final static PosterFragment getInstance(String urlImage){
+        url = urlImage;
+        return new PosterFragment();
+    }
 
     @Nullable
     @Override
@@ -20,11 +27,11 @@ public class PosterFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_poster,
                                             container, false);
 
-        imageView = viewGroup.findViewById(R.id.ivMoviePoster);
-        return  viewGroup;
-    }
+        imageView = (ImageView) viewGroup.findViewById(R.id.ivMoviePoster);
+        Picasso.get()
+                .load(url)
+                .into(imageView);
 
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
+        return  viewGroup;
     }
 }
