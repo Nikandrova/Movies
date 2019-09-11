@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.movies.R;
 import com.example.movies.data.Movie;
@@ -29,7 +28,7 @@ import com.example.movies.views.MovieDetailView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDetailView {
+public class MovieDetailActivity extends BaseActivity implements MovieDetailView {
     private static final String TAG = "DetailActivity";
 
     ToggleButton btnFavourites;
@@ -47,8 +46,8 @@ public class MovieDetailActivity extends MvpAppCompatActivity implements MovieDe
     MovieDetailPresenter movieDetailPresenter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
     }
 

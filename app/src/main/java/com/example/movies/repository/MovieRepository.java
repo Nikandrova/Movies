@@ -1,6 +1,5 @@
 package com.example.movies.repository;
 
-import com.example.movies.api.MoviesAPI;
 import com.example.movies.api.MoviesRetrofitAPI;
 import com.example.movies.data.Movie;
 import com.example.movies.data.MovieResponse;
@@ -13,11 +12,8 @@ import com.example.movies.db.MovieDao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
-import retrofit2.Retrofit;
 
 public class MovieRepository {
     private final MoviesRetrofitAPI moviesRetrofitAPI;
@@ -42,8 +38,7 @@ public class MovieRepository {
     }
 
     private Single<List<Movie>> loadPopularMoviesFromServer(final int page) {
-        return /*api.provide()*/
-            moviesRetrofitAPI
+        return moviesRetrofitAPI
                 .getPopularMovies("5d190a4676660309ee5187b997f90f2c", page)
                 .map(new Function<MovieResponse, List<Movie>>() {
                     @Override
@@ -68,8 +63,7 @@ public class MovieRepository {
     }
 
     public Single<List<Movie>> loadTopMovies(final int page) {
-        return /*api.provide()*/
-                moviesRetrofitAPI
+        return moviesRetrofitAPI
                 .getTopRatedMovies("5d190a4676660309ee5187b997f90f2c", page)
                 .map(new Function<MovieResponse, List<Movie>>() {
                     @Override
@@ -112,8 +106,7 @@ public class MovieRepository {
     }
 
     public Single<String> loadMovieTrailer(final Movie movie) {
-        return /*api.provide()*/
-                moviesRetrofitAPI
+        return moviesRetrofitAPI
                 .getTrailersMovie(String.valueOf(movie.getIdMovie()), "5d190a4676660309ee5187b997f90f2c")
                 .map(new Function<TrailerMovieResponce, String>() {
                     @Override
