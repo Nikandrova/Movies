@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.movies.R;
 import com.example.movies.data.Movie;
@@ -22,7 +21,7 @@ import com.example.movies.views.MovieView;
 
 import java.util.List;
 
-public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
+public class MoviesActivity extends BaseActivity implements MovieView {
     private final static int START_PAGE = 1;
     private int TOTAL_PAGE = 20;
     private boolean isLoading = false;
@@ -58,10 +57,10 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
                     if (((visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
                             && firstVisibleItemPosition >= 0
                             && totalItemCount >= (TOTAL_PAGE - 4)) {
-                        if(typeLoad == 0) {
+                        if (typeLoad == 0) {
                             CURRENT_PAGE++;
                             presenter.loadPopularMovies(CURRENT_PAGE);
-                        } else{
+                        } else {
                             CURRENT_PAGE++;
                             presenter.loadHeightRatedMovies(CURRENT_PAGE);
                         }
@@ -70,7 +69,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
             }
         });
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             rvPosters.setLayoutManager(new GridLayoutManager(this, 3));
         }
 
@@ -114,6 +113,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     @Override
     protected void onResume() {
         super.onResume();
+        hideProgress();
         checkedItemSelectedMenu();
     }
 
@@ -162,6 +162,8 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
                 public void onMovieClick(Movie movie) {
                     Intent intent = new Intent(MoviesActivity.this, MovieDetailActivity.class);
                     intent.putExtra("idMovieDetail", movie.getIdMovie());
+                    intent.putExtra("urlPosterMovieDetail", movie.getFullImageUrl());
+                    showProgress();
                     startActivity(intent);
                 }
             };
@@ -197,7 +199,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MovieView {
     public void checkedItemSelectedMenu() {
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(2);
-        if(menuItem.isChecked()){
+        if (menuItem.isChecked()) {
             presenter.loadFavoriteMovies();
             menuItem.setChecked(false);
         }

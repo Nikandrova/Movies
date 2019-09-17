@@ -1,6 +1,5 @@
 package com.example.movies.ui.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.movies.R;
-import com.example.movies.data.Movie;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
@@ -18,14 +16,34 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubeP
 
 public class TrailerFragment extends Fragment {
 
-    //YouTubePlayerView youTubePlayerView;
+    YouTubePlayerView youTubePlayerView;
+    static String urlVideo;
+
+    public static final TrailerFragment getInstance(String url){
+        urlVideo = url;
+        return new TrailerFragment();
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_trailer,
                                             container, false);
-        //youTubePlayerView = viewGroup.findViewById(R.id.pvTrailer);
+
+        youTubePlayerView = viewGroup.findViewById(R.id.pvTrailer);
+        getLifecycle().addObserver(youTubePlayerView);
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer youTubePlayer) {
+                youTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer.cueVideo(urlVideo, 0);
+                    }
+                });
+            }
+        }, true);
+
         return  viewGroup;
     }
 }

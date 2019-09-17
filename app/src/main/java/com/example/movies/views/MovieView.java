@@ -20,4 +20,10 @@ public interface MovieView extends MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void onError(Throwable t);
+
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void showProgress();
+
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void hideProgress();
 }

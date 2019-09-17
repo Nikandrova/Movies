@@ -16,22 +16,14 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AppModule.class, DatabaseModule.class})
+@Component(modules = {AppModule.class, DatabaseModule.class, ApiModule.class})
 public interface AppComponent {
 
     void inject(MoviePresenter moviePresenter);
 
     void inject(App app);
 
-    //void inject(AppDatabase appDatabase);
-
-    //void inject(MoviesAPI moviesAPI);
-
     void inject(MovieDetailPresenter movieDetailPresenter);
 
     void inject(MovieDao movieDao);
-
-    //void inject(MoviesRetrofitAPI moviesRetrofitAPI);
-
-    //void inject(MovieRepository repository);
 }

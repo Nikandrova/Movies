@@ -14,12 +14,6 @@ import com.example.movies.ui.activity.MovieDetailActivity;
 
 @Database(entities = {Movie.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-
-    private static final String LOG_TAG = AppDatabase.class.getSimpleName();
-    private static final Object LOCK = new Object();
-    private static final String DATABASE_NAME = "favorite";
-    private  static AppDatabase sInstance;
-
 //    public static AppDatabase getInstance(Context context) {
 //        if (sInstance == null) {
 //            synchronized (LOCK) {
