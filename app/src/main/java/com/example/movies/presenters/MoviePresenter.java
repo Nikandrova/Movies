@@ -37,11 +37,13 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                         getViewState().showProgress(); }})
+                        getViewState().showProgress();
+                    }
+                })
                 .doFinally(new Action() {
                     @Override
                     public void run() throws Exception {
-                         getViewState().hideProgress();
+                        getViewState().hideProgress();
                     }
                 })
                 .subscribe(new Consumer<List<Movie>>() {
@@ -64,7 +66,9 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        getViewState().showProgress(); }})
+                        getViewState().showProgress();
+                    }
+                })
                 .doFinally(new Action() {
                     @Override
                     public void run() throws Exception {
@@ -91,7 +95,9 @@ public class MoviePresenter extends MvpPresenter<MovieView> {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        getViewState().showProgress(); }})
+                        getViewState().showProgress();
+                    }
+                })
                 .doFinally(new Action() {
                     @Override
                     public void run() throws Exception {

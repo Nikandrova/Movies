@@ -28,6 +28,9 @@ import com.example.movies.views.MovieDetailView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
+
 public class MovieDetailActivity extends BaseActivity implements MovieDetailView {
     private static final String TAG = "DetailActivity";
 
@@ -98,12 +101,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         ratingMovie = findViewById(R.id.tvVoteAverage);
         realiseDateMovie = findViewById(R.id.tvReleaseDate);
 
-        movieDetailPresenter.getFavoriteMovie(idMovie);
+        movieDetailPresenter.getMovieDetail(idMovie);
     }
 
     @Override
     public void onMovieDetailLoaded(final Movie movie) {
-        if (movie.isFavorite()) {
+        if (movieDetailPresenter.movieIsFavorite(movie)) {
             btnFavourites.setChecked(true);
         }
 
@@ -129,7 +132,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                             Snackbar.LENGTH_SHORT).show();
                 } else {
                     movieDetailPresenter.deleteFavoriteMovie(movie);
-
                     Snackbar.make(buttonView, "Removed from favorite",
                             Snackbar.LENGTH_SHORT).show();
                 }
@@ -163,7 +165,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(PosterFragment.getInstance(urlPoster));
         movieDetailPresenter.getTrailerMovie(idMovie);
-        fragmentList.add(TrailerFragment.getInstance(movieDetailPresenter.getMovie(idMovie).getKeyTrailer()));
+        fragmentList.add(TrailerFragment.getInstance(Single.just(movieDetailPresenter.getMovie(idMovie).map(new Function<Movie, String>() {
+            @Override
+            public String apply(Movie movie) throws Exception {
+                return movie.getKeyTrailer();
+            }
+        })).toString()));
         return fragmentList;
     }
 }

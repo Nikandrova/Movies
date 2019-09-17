@@ -9,6 +9,7 @@ import com.example.movies.views.MovieDetailView;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -26,8 +27,8 @@ public class MovieDetailPresenter extends MvpPresenter<MovieDetailView>{
         App.getInstance().getAppComponent().inject(this);
     }
 
-    public void getFavoriteMovie(int id){
-        disposble = repository.getFavoriteMovieFromDB(id)
+    public void getMovieDetail(int id){
+        disposble = repository.getMovieFromDB(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Movie>() {
@@ -64,9 +65,13 @@ public class MovieDetailPresenter extends MvpPresenter<MovieDetailView>{
         repository.addFavoriteToDB(movie);
     }
 
+    public boolean movieIsFavorite(Movie movie){
+        return repository.movieIsFavorite(movie);
+    }
+
     public void deleteFavoriteMovie(Movie movie){
         repository.deleteMovieFromDB(movie);
     }
 
-    public Movie getMovie(int id) {return repository.getMovieFromDB(id);}
+    public Single<Movie> getMovie(int id) {return repository.getMovieFromDB(id);}
 }

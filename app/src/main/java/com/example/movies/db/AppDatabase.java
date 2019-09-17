@@ -12,7 +12,7 @@ import com.example.movies.App;
 import com.example.movies.data.Movie;
 import com.example.movies.ui.activity.MovieDetailActivity;
 
-@Database(entities = {Movie.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 //    public static AppDatabase getInstance(Context context) {
 //        if (sInstance == null) {

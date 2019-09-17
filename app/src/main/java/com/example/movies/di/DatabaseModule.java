@@ -4,35 +4,37 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.example.movies.api.MoviesAPI;
 import com.example.movies.api.MoviesRetrofitAPI;
 import com.example.movies.db.AppDatabase;
+import com.example.movies.db.FavMovieDao;
+import com.example.movies.db.FavMovieDatabase;
 import com.example.movies.db.MovieDao;
 import com.example.movies.presenters.MovieDetailPresenter;
 import com.example.movies.presenters.MoviePresenter;
 import com.example.movies.repository.MovieRepository;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class DatabaseModule {
     private static final String DATABASE_NAME = "DBMovie";
+    private static final String FAV_DATABASE_NAME = "FavMovieDB";
 
     private AppDatabase appDatabase;
+    private FavMovieDatabase favMovieDatabase;
 
     public DatabaseModule(Application application) {
         appDatabase = Room.databaseBuilder(application,
                 AppDatabase.class, DATABASE_NAME)
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+
+        favMovieDatabase = Room.databaseBuilder(application,
+                FavMovieDatabase.class, FAV_DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
@@ -44,6 +46,10 @@ public class DatabaseModule {
         return appDatabase;
     }
 
+    @Provides
+    @Singleton
+    FavMovieDatabase provideFavMovieDatabase(){return favMovieDatabase;}
+
 
     @Provides
     @Singleton
@@ -53,8 +59,14 @@ public class DatabaseModule {
 
     @Provides
     @Singleton
-    MovieRepository provideMovieRepository(MovieDao movieDao, MoviesRetrofitAPI moviesRetrofitAPI) {
-        return new MovieRepository(movieDao, moviesRetrofitAPI);
+    FavMovieDao provideFavMovieDao(FavMovieDatabase favMovieDatabase){
+        return favMovieDatabase.FavMovieDao();
+    }
+
+    @Provides
+    @Singleton
+    MovieRepository provideMovieRepository(MovieDao movieDao, FavMovieDao favMovieDao, MoviesRetrofitAPI moviesRetrofitAPI) {
+        return new MovieRepository(movieDao, favMovieDao, moviesRetrofitAPI);
     }
 
     @Provides

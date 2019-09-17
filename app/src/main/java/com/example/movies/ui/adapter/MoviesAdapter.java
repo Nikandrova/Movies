@@ -39,7 +39,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.PosterView
         final Movie currentItem = movies.get(index);
         String imageUrl = currentItem.getFullImageUrl();
 
-        //Log.d(TAG, "Trying load image by URL: " + imageUrl + " for child at pos : " + index);
         Picasso.get()
                 .load(imageUrl)
                 .into(vh.ivPoster);

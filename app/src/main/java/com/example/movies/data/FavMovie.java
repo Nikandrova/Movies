@@ -1,15 +1,11 @@
 package com.example.movies.data;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
-import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -18,9 +14,8 @@ import org.parceler.Parcel;
 import java.util.List;
 
 @Parcel
-@Entity(tableName = "movies", indices = @Index(value = {"idMovie"}, unique = true))
-public class Movie {
-
+@Entity(tableName = "favMovies", indices = @Index(value = {"idMovie"}, unique = true))
+public class FavMovie {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     @NonNull
@@ -86,11 +81,11 @@ public class Movie {
     String keyTrailer;
 
     @Ignore
-    public Movie() {
+    public FavMovie() {
     }
 
     @Ignore
-    public Movie(int voteCount, int id, boolean video, double voteAverage, String title,
+    public FavMovie(int voteCount, int id, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  List<Integer> genreIds, String backdropPath, boolean adult, String overview,
                  String releaseDate, String type, String keyTrailer) {
@@ -112,7 +107,7 @@ public class Movie {
         this.keyTrailer = keyTrailer;
     }
 
-    public Movie(int index, int voteCount, int idMovie, boolean video, double voteAverage, String title,
+    public FavMovie(int index, int voteCount, int idMovie, boolean video, double voteAverage, String title,
                  double popularity, String posterPath, String originalLanguage, String originalTitle,
                  String backdropPath, boolean adult, String overview,
                  String releaseDate, String type) {
